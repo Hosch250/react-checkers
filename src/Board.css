@@ -1,0 +1,10 @@
+.Board {
+    border: 2px black ridge;
+    height: 400px;
+    width: 400px;
+    margin: auto;
+}
+
+.Board .row {
+    height: 50px;
+}
