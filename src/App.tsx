@@ -1,13 +1,14 @@
-import React from 'react';
-import './App.css';
-import Board from './Board';
+import Board from './Board'
+import { BoardProvider } from './BoardContext'
 
 function App() {
   return (
-    <div className="App">
-      <Board />
-    </div>
-  );
+    <BoardProvider>
+      <div className="App">
+        <Board />
+      </div>
+    </BoardProvider>
+  )
 }
 
-export default App;
+export default App

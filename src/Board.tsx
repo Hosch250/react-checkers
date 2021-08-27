@@ -1,132 +1,92 @@
-import './Board.css';
-import wp from './Assets/WhitePiece.svg'
-import bp from './Assets/BlackPiece.svg'
-import wk from './Assets/WhiteKing.svg'
-import bk from './Assets/BlackKing.svg'
+import React from 'react'
+import './Board.css'
+import { useBoard } from './BoardContext'
+import {
+  Board as BoardType,
+  Color,
+  Coord,
+  defaultBoard,
+  Piece,
+} from './models/types'
+import { Square } from './Square'
+import { isValidMove, moveSequence } from './variants/american-checkers'
 
-enum Color {
-    White = 'white', Black = 'black'
+function getSquareColor(row: number, col: number) {
+  if ((row % 2 === 0 && col % 2 === 0) || (row % 2 === 1 && col % 2 === 1)) {
+    return Color.White
+  }
+
+  return Color.Black
 }
 
-enum PieceEnum {
-    WhitePiece, BlackPiece, WhiteKing, BlackKing
+function getOnSquareClicked(
+  board: BoardType,
+  state: Coord | undefined,
+  setState: React.Dispatch<React.SetStateAction<Coord | undefined>>,
+  setBoard: (value: BoardType) => void,
+) {
+  let onclick = React.useCallback((row: number, column: number) => {
+    const clickedCoord: Coord = {
+      Row: row,
+      Column: column,
+    }
+
+    if (!state) {
+      setState(clickedCoord)
+      return
+    }
+
+    if (state.Row === row && state.Column === column) {
+      setState(undefined)
+      return
+    }
+
+    if (isValidMove(state, clickedCoord, board)) {
+      let coords = [state, clickedCoord]
+      let newBoard = moveSequence(coords, board)!
+
+      setBoard(newBoard)
+    }
+
+    setState(clickedCoord)
+  }, [])
+
+  return onclick
+}
+
+function getSquare(
+  row: number,
+  col: number,
+  piece: Piece | undefined,
+  onclick: any
+) {
+  return (
+    <Square
+      key={`col_${row}${col}`}
+      color={getSquareColor(row, col)}
+      piece={piece}
+      row={row}
+      col={col}
+      onclick={onclick}
+    />
+  )
 }
 
 function Board() {
-  return (
-    <div className="Board">
-        <div className="row">
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-        </div>
-        <div className="row">
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-        </div>
-        <div className="row">
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-        </div>
-        <div className="row">
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-        </div>
-        <div className="row">
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-        </div>
-        <div className="row">
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-        </div>
-        <div className="row">
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-        </div>
-        <div className="row">
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-            <Square color={Color.Black} />
-            <Square color={Color.White} />
-        </div>
-    </div>
-  );
-}
+  const [state, setState] = React.useState<Coord | undefined>(undefined)
 
-export default Board;
-
-function Square({ color, piece }: { color: Color, piece?: PieceEnum }) {
-    const styles = {backgroundColor: color, height: 50, width: 50, display: 'inline-block'};
-    
-    let domPiece = piece ? <Piece piece={piece} /> : null;
+  const { value, onChange } = useBoard()
+  let board = value.map((_, row) => {
     return (
-        <div style={styles}>
-            {domPiece}
-        </div>
-    );
+      <div className="row" key={`row_${row}`}>
+        {defaultBoard[row].map((piece, col) => {
+          return getSquare(row, col, piece, getOnSquareClicked(value, state, setState, onChange))
+        })}
+      </div>
+    )
+  })
+
+  return <div className="Board">{board}</div>
 }
 
-function Piece({ piece }: { piece: PieceEnum }) {
-    let domPiece = null;
-    switch (piece) {
-        case PieceEnum.WhitePiece:
-            domPiece = <img src={wp} style={{padding: 5}} />
-            break;
-        case PieceEnum.BlackPiece:
-            domPiece = <img src={bp} style={{padding: 5}} />
-            break;
-        case PieceEnum.WhiteKing:
-            domPiece = <img src={wk} style={{padding: 5}} />
-            break;
-        case PieceEnum.BlackKing:
-            domPiece = <img src={bk} style={{padding: 5}} />
-            break;
-    }
-    return domPiece;
-}
+export default Board
