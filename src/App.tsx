@@ -1,13 +1,13 @@
 import Board from './Board'
-import { BoardProvider } from './BoardContext'
+import { GameControllerProvider } from './GameControllerContext'
 
 function App() {
   return (
-    <BoardProvider>
+    <GameControllerProvider>
       <div className="App">
         <Board />
       </div>
-    </BoardProvider>
+    </GameControllerProvider>
   )
 }
 

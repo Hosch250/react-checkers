@@ -1,14 +1,15 @@
 import { Coord, Board, Player, Move, Variant, PdnTurn } from './types'
+import * as AmericanCheckersVariant from '../variants/american-checkers'
 
-export type AiMembers = {
-  uncheckedMoveSequence: (coord: Coord[], board: Board) => Board
-  calculateMoves: (player: Player, board: Board) => Move[]
-  winningPlayer: (
-    board: Board,
-    player: Player | undefined,
-  ) => Player | undefined
-  calculateWeightDifference: (board: Board) => number
-}
+// export type AiMembers = {
+//   uncheckedMoveSequence: (coord: Coord[], board: Board) => Board
+//   calculateMoves: (player: Player, board: Board) => Move[]
+//   winningPlayer: (
+//     board: Board,
+//     player: Player | undefined,
+//   ) => Player | undefined
+//   calculateWeightDifference: (board: Board) => number
+// }
 // with
 // static member AmericanCheckers =
 //     {
@@ -36,6 +37,9 @@ export type PdnMembers = {
   pdnBoard: (number | undefined)[][]
   pdnBoardCoords: Coord[]
 }
+const PdnMembersAmericanCheckers:PdnMembers =
+  {pdnBoard:AmericanCheckersVariant.pdnBoard, pdnBoardCoords:AmericanCheckersVariant.pdnBoardCoords}
+
 // with
 // static member AmericanCheckers =
 //     {
@@ -111,9 +115,13 @@ export type ApiMembers = {
 
 export type GameVariant = {
   variant: Variant
-  aiMembers: AiMembers
+  //aiMembers: AiMembers
   pdnMembers: PdnMembers
-  apiMembers: ApiMembers
+  //apiMembers: ApiMembers
+}
+export const GameVariantAmericanCheckers: GameVariant = {
+  variant: Variant.AmericanCheckers,
+  pdnMembers: PdnMembersAmericanCheckers
 }
 // with
 // static member AmericanCheckers =

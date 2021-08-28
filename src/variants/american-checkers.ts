@@ -17,30 +17,52 @@ const Rows = 7
 const Columns = 7
 const StartingPlayer = Player.Black
 
-// let internal pdnBoard =
-//     array2D [
-//         [None; Some 1; None; Some 2; None; Some 3; None; Some 4];
-//         [Some 5; None; Some 6; None; Some 7; None; Some 8; None];
-//         [None; Some 9; None; Some 10; None; Some 11; None; Some 12];
-//         [Some 13; None; Some 14; None; Some 15; None; Some 16; None];
-//         [None; Some 17; None; Some 18; None; Some 19; None; Some 20];
-//         [Some 21; None; Some 22; None; Some 23; None; Some 24; None];
-//         [None; Some 25; None; Some 26; None; Some 27; None; Some 28];
-//         [Some 29; None; Some 30; None; Some 31; None; Some 32; None];
-//     ]
+export const pdnBoard = [
+  [undefined, 1, undefined, 2, undefined, 3, undefined, 4],
+  [5, undefined, 6, undefined, 7, undefined, 8, undefined],
+  [undefined, 9, undefined, 10, undefined, 11, undefined, 12],
+  [13, undefined, 14, undefined, 15, undefined, 16, undefined],
+  [undefined, 17, undefined, 18, undefined, 19, undefined, 20],
+  [21, undefined, 22, undefined, 23, undefined, 24, undefined],
+  [undefined, 25, undefined, 26, undefined, 27, undefined, 28],
+  [29, undefined, 30, undefined, 31, undefined, 32, undefined],
+]
 
-// let internal pdnBoardCoords =
-//     [
-//         {Row = -1; Column = -1};    // adjust for FEN's 1-based indexing
-//         {Row = 0; Column = 1}; {Row = 0; Column = 3}; {Row = 0; Column = 5}; {Row = 0; Column = 7};
-//         {Row = 1; Column = 0}; {Row = 1; Column = 2}; {Row = 1; Column = 4}; {Row = 1; Column = 6};
-//         {Row = 2; Column = 1}; {Row = 2; Column = 3}; {Row = 2; Column = 5}; {Row = 2; Column = 7};
-//         {Row = 3; Column = 0}; {Row = 3; Column = 2}; {Row = 3; Column = 4}; {Row = 3; Column = 6};
-//         {Row = 4; Column = 1}; {Row = 4; Column = 3}; {Row = 4; Column = 5}; {Row = 4; Column = 7};
-//         {Row = 5; Column = 0}; {Row = 5; Column = 2}; {Row = 5; Column = 4}; {Row = 5; Column = 6};
-//         {Row = 6; Column = 1}; {Row = 6; Column = 3}; {Row = 6; Column = 5}; {Row = 6; Column = 7};
-//         {Row = 7; Column = 0}; {Row = 7; Column = 2}; {Row = 7; Column = 4}; {Row = 7; Column = 6};
-//     ]
+export const pdnBoardCoords = [
+  { Row: -1, Column: -1 }, // adjust for FEN's 1-based indexing
+  { Row: 0, Column: 1 },
+  { Row: 0, Column: 3 },
+  { Row: 0, Column: 5 },
+  { Row: 0, Column: 7 },
+  { Row: 1, Column: 0 },
+  { Row: 1, Column: 2 },
+  { Row: 1, Column: 4 },
+  { Row: 1, Column: 6 },
+  { Row: 2, Column: 1 },
+  { Row: 2, Column: 3 },
+  { Row: 2, Column: 5 },
+  { Row: 2, Column: 7 },
+  { Row: 3, Column: 0 },
+  { Row: 3, Column: 2 },
+  { Row: 3, Column: 4 },
+  { Row: 3, Column: 6 },
+  { Row: 4, Column: 1 },
+  { Row: 4, Column: 3 },
+  { Row: 4, Column: 5 },
+  { Row: 4, Column: 7 },
+  { Row: 5, Column: 0 },
+  { Row: 5, Column: 2 },
+  { Row: 5, Column: 4 },
+  { Row: 5, Column: 6 },
+  { Row: 6, Column: 1 },
+  { Row: 6, Column: 3 },
+  { Row: 6, Column: 5 },
+  { Row: 6, Column: 7 },
+  { Row: 7, Column: 0 },
+  { Row: 7, Column: 2 },
+  { Row: 7, Column: 4 },
+  { Row: 7, Column: 6 },
+]
 
 function kingRowIndex(player: Player | undefined) {
   switch (player) {

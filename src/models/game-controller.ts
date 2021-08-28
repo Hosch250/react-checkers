@@ -1,5 +1,5 @@
-import { GameVariant } from './game-variant'
-import { Board, Coord, PdnTurn, Player } from './types'
+import { GameVariant, GameVariantAmericanCheckers } from './game-variant'
+import { Board, Coord, defaultBoard, defaultFen, PdnTurn, Player } from './types'
 
 export type GameController = {
   Variant: GameVariant
@@ -9,6 +9,9 @@ export type GameController = {
   MoveHistory: PdnTurn[]
   CurrentCoord: Coord | undefined
 }
+
+export const newAmericanCheckersGame: GameController =
+  { Variant: GameVariantAmericanCheckers, Board: defaultBoard, CurrentPlayer: Player.Black, InitialPosition: defaultFen, MoveHistory: [], CurrentCoord: undefined }
 // with
 //     static member newAmericanCheckersGame =
 //         { Variant = GameVariant.AmericanCheckers; Board = Checkers.Board.defaultBoard; CurrentPlayer = Black; InitialPosition = Checkers.Board.defaultFen; MoveHistory = []; CurrentCoord = None }

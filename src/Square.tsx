@@ -1,4 +1,4 @@
-import { Color, Piece as PieceModel, PieceType } from './models/types'
+import { Color, Piece as PieceModel } from './models/types'
 import { Piece } from './Piece'
 
 export function Square({
