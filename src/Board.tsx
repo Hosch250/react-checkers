@@ -7,6 +7,7 @@ import {
   Coord,
   defaultBoard,
   Piece,
+  PieceType,
   Player,
   square,
 } from './models/types'
@@ -99,15 +100,17 @@ function Board() {
   const [state, setState] = React.useState<Coord | undefined>(undefined)
   const { value, onChange } = useGameController()
 
-  let jsx = value.Board.map((_, row) => {
+  let memo = React.useCallback(getOnSquareClicked, [])
+
+  let jsx = value.Board.map((row, rowIndex) => {
     return (
-      <div className="row" key={`row_${row}`}>
-        {defaultBoard[row].map((piece, col) => {
+      <div className="row" key={`row_${rowIndex}`}>
+        {row.map((piece, col) => {
           return getSquare(
-            row,
+            rowIndex,
             col,
             piece,
-            getOnSquareClicked(value, state, setState, onChange),
+            memo(value, state, setState, onChange),
           )
         })}
       </div>
