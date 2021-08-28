@@ -37,8 +37,10 @@ export type PdnMembers = {
   pdnBoard: (number | undefined)[][]
   pdnBoardCoords: Coord[]
 }
-const PdnMembersAmericanCheckers:PdnMembers =
-  {pdnBoard:AmericanCheckersVariant.pdnBoard, pdnBoardCoords:AmericanCheckersVariant.pdnBoardCoords}
+const PdnMembersAmericanCheckers: PdnMembers = {
+  pdnBoard: AmericanCheckersVariant.pdnBoard,
+  pdnBoardCoords: AmericanCheckersVariant.pdnBoardCoords,
+}
 
 // with
 // static member AmericanCheckers =
@@ -78,6 +80,17 @@ export type ApiMembers = {
     finalBoard: Board,
   ) => boolean
 }
+export const ApiMembersAmericanCheckers: ApiMembers = {
+  isValidMove: AmericanCheckersVariant.isValidMove,
+  movePiece: AmericanCheckersVariant.movePiece,
+  moveSequence: AmericanCheckersVariant.moveSequence,
+  isJump: AmericanCheckersVariant.isJump,
+  startingPlayer: AmericanCheckersVariant.StartingPlayer,
+  winningPlayer: AmericanCheckersVariant.winningPlayer,
+  isDrawn: AmericanCheckersVariant.isDrawn,
+  playerTurnEnds: AmericanCheckersVariant.playerTurnEnds,
+}
+
 // with
 // static member AmericanCheckers =
 //     {
@@ -117,11 +130,12 @@ export type GameVariant = {
   variant: Variant
   //aiMembers: AiMembers
   pdnMembers: PdnMembers
-  //apiMembers: ApiMembers
+  apiMembers: ApiMembers
 }
 export const GameVariantAmericanCheckers: GameVariant = {
   variant: Variant.AmericanCheckers,
-  pdnMembers: PdnMembersAmericanCheckers
+  pdnMembers: PdnMembersAmericanCheckers,
+  apiMembers: ApiMembersAmericanCheckers
 }
 // with
 // static member AmericanCheckers =

@@ -48,23 +48,30 @@ function getOnSquareClicked(
       return
     }
 
-    console.log('valid move')
     if (isValidMove(state, clickedCoord, controller.Board)) {
       let coords = [state, clickedCoord]
       let newBoard = moveSequence(coords, controller.Board)!
 
+      let turnHasEnded = controller.Variant.apiMembers.playerTurnEnds(
+        [state, clickedCoord],
+        controller.Board,
+        newBoard,
+      )
+      let nextPlayer = !turnHasEnded
+        ? controller.CurrentPlayer
+        : controller.CurrentPlayer === Player.White
+        ? Player.Black
+        : Player.White
       let newController = {
         ...controller,
         Board: newBoard,
-        CurrentPlayer: controller.CurrentPlayer === Player.White ? Player.Black : Player.White,
-        // MoveHistory: PdnTurn[]  // todo: add the move
-        CurrentCoord: undefined    // todo: set the coord for multi-jumps
-      
+        CurrentPlayer: nextPlayer,
+        MoveHistory: [], // PdnTurn[]  // todo: add the move
+        CurrentCoord: turnHasEnded ? undefined : clickedCoord,
       }
       updateController(newController)
+      setState(newController.CurrentCoord)
     }
-
-    setState(clickedCoord)
   }
 
   return onclick
@@ -74,7 +81,7 @@ function getSquare(
   row: number,
   col: number,
   piece: Piece | undefined,
-  onclick: any
+  onclick: any,
 ) {
   return (
     <Square
@@ -90,13 +97,18 @@ function getSquare(
 
 function Board() {
   const [state, setState] = React.useState<Coord | undefined>(undefined)
-
   const { value, onChange } = useGameController()
+
   let jsx = value.Board.map((_, row) => {
     return (
       <div className="row" key={`row_${row}`}>
         {defaultBoard[row].map((piece, col) => {
-          return getSquare(row, col, piece, getOnSquareClicked(value, state, setState, onChange))
+          return getSquare(
+            row,
+            col,
+            piece,
+            getOnSquareClicked(value, state, setState, onChange),
+          )
         })}
       </div>
     )
