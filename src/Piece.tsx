@@ -11,7 +11,7 @@ import {
 } from './models/types'
 import { isEqual } from 'lodash'
 
-export function Piece({ piece }: { piece: PieceModel }) {
+function Piece({ piece }: { piece: PieceModel }) {
   let domPiece = null
   switch (true) {
     case isEqual(whiteChecker, piece):

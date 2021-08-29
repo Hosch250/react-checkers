@@ -1,7 +1,7 @@
 import { Color, Piece as PieceModel } from './models/types'
-import { Piece } from './Piece'
+import Piece from './Piece'
 
-export function Square({
+function Square({
   color,
   piece,
   row,

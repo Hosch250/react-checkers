@@ -25,4 +25,5 @@ function GameControllerProvider({ children }: { children: any }) {
   )
 }
 
-export { GameControllerProvider, useGameController }
+export { useGameController }
+export default GameControllerProvider

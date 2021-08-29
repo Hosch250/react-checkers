@@ -14,7 +14,7 @@ import {
   square,
   Board as BoardType,
 } from './models/types'
-import { Square } from './Square'
+import Square from './Square'
 import { isValidMove, moveSequence } from './variants/american-checkers'
 
 function getDisplayString(
@@ -269,7 +269,7 @@ function Board() {
   const { value, onChange } = useGameController()
 
   let memo = React.useCallback(getOnSquareClicked, [])
-  console.log(value.MoveHistory)
+
   let jsx = value.Board.map((row, rowIndex) => {
     return (
       <div className="row" key={`row_${rowIndex}`}>
