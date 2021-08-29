@@ -1,0 +1,10 @@
+.MoveHistory {
+    grid-row: 2;
+}
+
+.MoveHistory ol {
+    list-style: none;
+    max-height: 400px;
+    overflow: auto;
+    margin: 0;
+}

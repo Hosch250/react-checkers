@@ -15,16 +15,16 @@ function Piece({ piece }: { piece: PieceModel }) {
   let domPiece = null
   switch (true) {
     case isEqual(whiteChecker, piece):
-      domPiece = <img src={wp} style={{ padding: 5 }} alt="white checker" />
+      domPiece = <img src={wp} style={{ margin: 5, verticalAlign: "unset" }} alt="white checker" />
       break
     case isEqual(blackChecker, piece):
-      domPiece = <img src={bp} style={{ padding: 5 }} alt="black checker" />
+      domPiece = <img src={bp} style={{ margin: 5, verticalAlign: "unset" }} alt="black checker" />
       break
     case isEqual(whiteKing, piece):
-      domPiece = <img src={wk} style={{ padding: 5 }} alt="white king" />
+      domPiece = <img src={wk} style={{ margin: 5, verticalAlign: "unset" }} alt="white king" />
       break
     case isEqual(blackKing, piece):
-      domPiece = <img src={bk} style={{ padding: 5 }} alt="black king" />
+      domPiece = <img src={bk} style={{ margin: 5, verticalAlign: "unset" }} alt="black king" />
       break
   }
   return domPiece

@@ -2,9 +2,10 @@
     border: 2px black ridge;
     height: 400px;
     width: 400px;
-    margin: auto;
+    grid-column: 1 / span 2;
+    grid-row: 2;
 }
 
-.Board .row {
+.Board .board-row {
     height: 50px;
 }

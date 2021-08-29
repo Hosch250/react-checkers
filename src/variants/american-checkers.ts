@@ -452,7 +452,7 @@ export function winningPlayer(board: Board, currentPlayer: Player | undefined) {
     return currentPlayer
   } else if (!whiteHasMove) {
     return Player.Black
-  } else if (blackHasMove) {
+  } else if (!blackHasMove) {
     return Player.White
   } else {
     return undefined

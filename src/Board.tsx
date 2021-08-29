@@ -272,7 +272,7 @@ function Board() {
 
   let jsx = value.Board.map((row, rowIndex) => {
     return (
-      <div className="row" key={`row_${rowIndex}`}>
+      <div className="board-row" key={`row_${rowIndex}`}>
         {row.map((piece, col) => {
           return getSquare(
             rowIndex,

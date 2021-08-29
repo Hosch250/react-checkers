@@ -1,4 +1,5 @@
 import { useGameController } from "./GameControllerContext"
+import "./MoveHistory.css"
 
 function MoveHistory() {
   const { value } = useGameController()
