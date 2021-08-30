@@ -1,0 +1,9 @@
+.Square {
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+}
+
+.Square.selected {
+    box-shadow:inset 0px 0px 0px 3px cornflowerblue;
+}

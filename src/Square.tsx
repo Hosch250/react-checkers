@@ -1,29 +1,24 @@
-import { Color, Piece as PieceModel } from './models/types'
+import { Color, Coord, Piece as PieceModel } from './models/types'
 import Piece from './Piece'
+import './Square.css'
 
 function Square({
   color,
   piece,
-  row,
-  col,
+  coord,
+  isSelected,
   onclick,
 }: {
   color: Color
   piece?: PieceModel
-  row: number
-  col: number
+  coord: Coord,
+  isSelected: boolean,
   onclick: (row: number, col: number) => void
 }) {
-  const styles = {
-    backgroundColor: color,
-    height: 50,
-    width: 50,
-    display: 'inline-block',
-  }
 
   let domPiece = piece ? <Piece piece={piece} /> : null
   return (
-    <div style={styles} role="button" onClick={() => onclick(row, col)}>
+    <div style={{backgroundColor: color}} className={`Square ${isSelected ? 'selected' : ''}`} role="button" onClick={() => onclick(coord.Row, coord.Column)}>
       {domPiece}
     </div>
   )

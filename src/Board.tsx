@@ -249,6 +249,7 @@ function getOnSquareClicked(
 function getSquare(
   row: number,
   col: number,
+  isSelected: boolean,
   piece: Piece | undefined,
   onclick: any,
 ) {
@@ -257,8 +258,8 @@ function getSquare(
       key={`col_${row}${col}`}
       color={getSquareColor(row, col)}
       piece={piece}
-      row={row}
-      col={col}
+      coord={{Row:row, Column: col}}
+      isSelected={isSelected}
       onclick={onclick}
     />
   )
@@ -277,6 +278,7 @@ function Board() {
           return getSquare(
             rowIndex,
             col,
+            state?.Row === rowIndex && state.Column === col,
             piece,
             memo(value, state, setState, onChange),
           )

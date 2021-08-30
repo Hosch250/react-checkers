@@ -1,10 +1,22 @@
 .MoveHistory {
-    grid-row: 2;
+  grid-row: 2;
 }
 
-.MoveHistory ol {
-    list-style: none;
-    max-height: 400px;
+.MoveHistory fieldset {
+    height: 385px;
     overflow: auto;
-    margin: 0;
+}
+
+.MoveHistory label > span {
+    width: 80%;
+    display: inline-block;
+    padding: 0px 0.25rem;
+}
+
+.MoveHistory label > input[type='radio'] {
+  display: none;
+}
+
+.MoveHistory label > input[type='radio']:checked + * {
+  background-color: lightgray;
 }
