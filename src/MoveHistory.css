@@ -1,20 +1,5 @@
-/* .MoveHistory {
-  grid-row: 2;
-}
-
-.MoveHistory fieldset {
-    height: 385px;
-    overflow: auto;
-} */
-
 .MoveHistory label > span {
     width: 80%;
-    display: inline-block;
-    padding: 0px 0.25rem;
-}
-
-.MoveHistory label > input[type='radio'] {
-  display: none;
 }
 
 .MoveHistory label > input[type='radio']:checked + * {
