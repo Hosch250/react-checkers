@@ -1,5 +1,6 @@
 import { last } from 'lodash'
 import { useGameController } from './GameControllerContext'
+import { Popover } from 'react-bootstrap'
 import './MoveHistory.css'
 
 function MoveHistory() {
@@ -15,7 +16,7 @@ function MoveHistory() {
               {m.MoveNumber}.
             </div>
             {m.BlackMove?.DisplayString ? (
-              <label className="col-5 text-start">
+              <label className="col-5 text-start" title={m.BlackMove.DisplayString}>
                 <input
                   className="d-none"
                   value={m.BlackMove.DisplayString}
@@ -27,7 +28,7 @@ function MoveHistory() {
               </label>
             ) : null}
             {m.WhiteMove?.DisplayString ? (
-              <label className="col-5 text-start">
+              <label className="col-5 text-start" title={m.WhiteMove.DisplayString}>
                 <input
                   className="d-none"
                   value={m.WhiteMove.DisplayString}

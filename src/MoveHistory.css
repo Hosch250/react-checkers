@@ -1,7 +1,3 @@
-.MoveHistory label > span {
-    width: 80%;
-}
-
 .MoveHistory label > input[type='radio']:checked + * {
   background-color: lightgray;
 }

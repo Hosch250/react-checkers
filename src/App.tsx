@@ -16,7 +16,7 @@ function App() {
           <Col xs="auto"><DisplayWin /></Col>
         </Row>
         <Row>
-          <Col lg="auto" md={12} className="offset-xl-3 order-3 order-lg-1">
+          <Col lg="auto" md={12} className="offset-xl-2 order-3 order-lg-1">
             <GameInfo />
           </Col>
           <Col md="auto" sm={12} className="order-1 order-md-3">
