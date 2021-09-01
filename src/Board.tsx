@@ -13,6 +13,7 @@ import {
   Player,
   square,
   Board as BoardType,
+  PdnTurn,
 } from './models/types'
 import Square from './Square'
 import { isValidMove, moveSequence } from './variants/american-checkers'
@@ -24,6 +25,16 @@ function getDisplayString(
   board: BoardType,
 ) {
   return pdnTurn.join(variant.isJump(move, board) ? 'x' : '-')
+}
+
+function getLastFen(turn: PdnTurn) {
+  if (!!turn.WhiteMove) {
+    return turn.WhiteMove.ResultingFen
+  } else if (!!turn.BlackMove) {
+    return turn.BlackMove.ResultingFen
+  } else {
+    return undefined
+  }
 }
 
 function getPdnForMove(
@@ -205,6 +216,18 @@ function getOnSquareClicked(
     }
 
     if (!state) {
+      return
+    }
+
+    if (
+      controller.MoveHistory.length !== 0 &&
+      getLastFen(last(controller.MoveHistory)!) !==
+        createFen(
+          controller.Variant.pdnMembers,
+          controller.CurrentPlayer,
+          controller.Board,
+        )
+    ) {
       return
     }
 

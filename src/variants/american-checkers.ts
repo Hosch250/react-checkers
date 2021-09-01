@@ -13,7 +13,7 @@ import {
   promote,
   square,
 } from '../models/types'
-import { cloneDeep, countBy, drop, keys, last } from 'lodash'
+import { cloneDeep, countBy, drop, keys, last, tail } from 'lodash'
 
 const Rows = 7
 const Columns = 7
@@ -79,6 +79,7 @@ function kingRowIndex(player: Player | undefined) {
 
 function coordExists(coord: Coord) {
   return (
+    !!coord &&
     coord.Row >= 0 &&
     coord.Row <= Rows &&
     coord.Column >= 0 &&
@@ -185,13 +186,14 @@ function hasValidHop(startCoord: Coord, board: Board) {
   ]
 
   function anyHopIsValid(hops: Move): boolean {
-    let coord = hops.shift()!
+    let coord = hops[0]
+    let hopsTail = tail(hops)
     if (coordExists(coord) && isValidHop(startCoord, coord, board)) {
       return true
     } else if (hops.length === 0) {
       return false
     } else {
-      return anyHopIsValid(hops)
+      return anyHopIsValid(hopsTail)
     }
   }
 
@@ -207,13 +209,14 @@ function hasValidJump(startCoord: Coord, board: Board) {
   ]
 
   function anyJumpIsValid(jumps: Move): boolean {
-    let coord = jumps.shift()!
+    let coord = jumps[0]
+    let jumpsTail = tail(jumps)
     if (coordExists(coord) && isValidJump(startCoord, coord, board)) {
       return true
     } else if (jumps.length === 0) {
       return false
     } else {
-      return anyJumpIsValid(jumps)
+      return anyJumpIsValid(jumpsTail)
     }
   }
 
@@ -344,8 +347,7 @@ export function moveSequence(
 
   if (coords.length >= 3) {
     let newBoard = movePiece(coords[0], coords[1], board, requireJumps)
-    coords.shift()
-    return moveSequence(coords, newBoard, requireJumps)
+    return moveSequence(tail(coords), newBoard, requireJumps)
   } else {
     return movePiece(coords[0], coords[1], board, requireJumps)
   }

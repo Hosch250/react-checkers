@@ -1,16 +1,16 @@
-import { tail, takeWhile } from 'lodash'
-import { PdnMembers } from './game-variant'
+import { tail } from 'lodash'
+import { GameVariant, PdnMembers } from './game-variant'
 import {
   blackChecker,
   blackKing,
   Board,
   Coord,
+  emptyBoardList,
   isPlayerPiece,
   nextPoint,
   PieceType,
   Player,
   square,
-  Variant,
   whiteChecker,
   whiteKing,
 } from './types'
@@ -38,13 +38,14 @@ function addPieces(
   board: Board,
   pdnBoardCoords: Coord[],
 ) {
-  let head = fenPieces.shift()!
+  let head = fenPieces[0]
+  let fenTail = tail(fenPieces)
   let isKing = head[0] === 'K'
   let fenNumber = isKing ? parseInt(head.substring(1)) : parseInt(head)
 
   let boardCoord = pdnBoardCoords[fenNumber]
 
-  let piece
+  let piece = undefined
   switch (true) {
     case player === Player.White && isKing:
       piece = whiteKing
@@ -61,37 +62,39 @@ function addPieces(
   }
   board[boardCoord.Row][boardCoord.Column] = piece
 
-  if (tail.length !== 0) {
-    addPieces(fenPieces, player, board, pdnBoardCoords)
+  if (fenTail.length !== 0) {
+    addPieces(fenTail, player, board, pdnBoardCoords)
   }
 }
 
-// export function controllerFromFen(variant, fen :string) {
-//     let fenValue = fen.Split('"').[1]
-//     let fenSubsections = fenValue.Split(':')
-//     let playerTurn =
-//         match fenSubsections.[0].[0] with
-//         | BlackSymbol -> Black
-//         | WhiteSymbol -> White
+export function controllerFromFen(variant: GameVariant, fen: string) {
+  let fenValue = fen.split('"')[1]
+  let fenSubsections = fenValue.split(':')
+  let playerTurn =
+    fenSubsections[0][0] === BlackSymbol ? Player.Black : Player.White
 
-//     let whitePieces = getPieceNotation fenSubsections WhiteSymbol
-//     let blackPieces = getPieceNotation fenSubsections BlackSymbol
+  let whitePieces = getPieceNotation(fenSubsections, WhiteSymbol)
+  let blackPieces = getPieceNotation(fenSubsections, BlackSymbol)
 
-//     let pdnBoardCoords = variant.pdnMembers.pdnBoardCoords
+  let pdnBoardCoords = variant.pdnMembers.pdnBoardCoords
 
-//     let board = emptyBoardList()
-//     if whitePieces.Length > 0 then addPieces (List.ofArray whitePieces) White board pdnBoardCoords
-//     if blackPieces.Length > 0 then addPieces (List.ofArray blackPieces) Black board pdnBoardCoords
+  let board = emptyBoardList()
+  if (whitePieces.length > 0) {
+    addPieces(whitePieces, Player.White, board, pdnBoardCoords)
+  }
+  if (blackPieces.length > 0) {
+    addPieces(blackPieces, Player.Black, board, pdnBoardCoords)
+  }
 
-//     return {
-//         Variant = variant
-//         Board = board;
-//         CurrentPlayer = playerTurn;
-//         InitialPosition = fen;
-//         MoveHistory = []
-//         CurrentCoord = None;
-//     }
-// }
+  return {
+    Variant: variant,
+    Board: board,
+    CurrentPlayer: playerTurn,
+    InitialPosition: fen,
+    MoveHistory: [],
+    CurrentCoord: undefined,
+  }
+}
 
 export function createFen(variant: PdnMembers, player: Player, board: Board) {
   let turnSymbol = player === Player.White ? WhiteSymbol : BlackSymbol
