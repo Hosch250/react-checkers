@@ -1,11 +1,11 @@
-.MoveHistory {
+/* .MoveHistory {
   grid-row: 2;
 }
 
 .MoveHistory fieldset {
     height: 385px;
     overflow: auto;
-}
+} */
 
 .MoveHistory label > span {
     width: 80%;

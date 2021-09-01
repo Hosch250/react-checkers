@@ -166,11 +166,9 @@ function updateGameHistory(
     gameController.MoveHistory.splice(
       gameController.MoveHistory.length - 1,
       1,
-      newTurnValue
+      newTurnValue,
     )
-    return [
-      ...gameController.MoveHistory
-    ]
+    return [...gameController.MoveHistory]
   }
 }
 
@@ -194,18 +192,19 @@ function getOnSquareClicked(
       Column: column,
     }
 
+    if (
+      controller.CurrentPlayer ===
+      square(clickedCoord, controller.Board)?.Player
+    ) {
+      if (state?.Row === row && state.Column === column) {
+        setState(undefined)
+      } else {
+        setState(clickedCoord)
+      }
+      return
+    }
+
     if (!state) {
-      setState(clickedCoord)
-      return
-    }
-
-    if (state.Row === row && state.Column === column) {
-      setState(undefined)
-      return
-    }
-
-    if (controller.CurrentPlayer !== square(state, controller.Board)?.Player) {
-      setState(undefined)
       return
     }
 
@@ -258,7 +257,7 @@ function getSquare(
       key={`col_${row}${col}`}
       color={getSquareColor(row, col)}
       piece={piece}
-      coord={{Row:row, Column: col}}
+      coord={{ Row: row, Column: col }}
       isSelected={isSelected}
       onclick={onclick}
     />

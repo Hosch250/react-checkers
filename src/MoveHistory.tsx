@@ -8,9 +8,9 @@ function MoveHistory() {
   return (
     <div className="MoveHistory">
       <fieldset>
-        <legend className="sr-only">Move History</legend>
+        <legend className="visually-hidden">Move History</legend>
         {value.MoveHistory.map((m) => (
-          <div>
+          <div key={m.MoveNumber}>
             <div style={{ display: 'inline-block', width: '2rem' }}>
               {m.MoveNumber}.
             </div>
