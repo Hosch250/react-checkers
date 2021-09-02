@@ -1,5 +1,6 @@
 import { Coord, Board, Player, Move, Variant, PdnTurn } from './types'
 import * as AmericanCheckersVariant from '../variants/american-checkers'
+import * as PoolCheckersVariant from '../variants/pool-checkers'
 
 // export type AiMembers = {
 //   uncheckedMoveSequence: (coord: Coord[], board: Board) => Board
@@ -40,6 +41,10 @@ export type PdnMembers = {
 const PdnMembersAmericanCheckers: PdnMembers = {
   pdnBoard: AmericanCheckersVariant.pdnBoard,
   pdnBoardCoords: AmericanCheckersVariant.pdnBoardCoords,
+}
+const PdnMembersPoolCheckers: PdnMembers = {
+  pdnBoard: PoolCheckersVariant.pdnBoard,
+  pdnBoardCoords: PoolCheckersVariant.pdnBoardCoords,
 }
 
 // with
@@ -90,6 +95,16 @@ export const ApiMembersAmericanCheckers: ApiMembers = {
   isDrawn: AmericanCheckersVariant.isDrawn,
   playerTurnEnds: AmericanCheckersVariant.playerTurnEnds,
 }
+export const ApiMembersPoolCheckers: ApiMembers = {
+  isValidMove: PoolCheckersVariant.isValidMove,
+  movePiece: PoolCheckersVariant.movePiece,
+  moveSequence: PoolCheckersVariant.moveSequence,
+  isJump: PoolCheckersVariant.isJump,
+  startingPlayer: PoolCheckersVariant.StartingPlayer,
+  winningPlayer: PoolCheckersVariant.winningPlayer,
+  isDrawn: PoolCheckersVariant.isDrawn,
+  playerTurnEnds: PoolCheckersVariant.playerTurnEnds,
+}
 
 // with
 // static member AmericanCheckers =
@@ -136,6 +151,11 @@ export const GameVariantAmericanCheckers: GameVariant = {
   variant: Variant.AmericanCheckers,
   pdnMembers: PdnMembersAmericanCheckers,
   apiMembers: ApiMembersAmericanCheckers
+}
+export const GameVariantPoolCheckers: GameVariant = {
+  variant: Variant.PoolCheckers,
+  pdnMembers: PdnMembersPoolCheckers,
+  apiMembers: ApiMembersPoolCheckers
 }
 // with
 // static member AmericanCheckers =

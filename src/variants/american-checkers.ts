@@ -374,7 +374,7 @@ export function isDrawn(initialFen: string, moveHistory: PdnTurn[]) {
         return [f.BlackMove.ResultingFen, f.WhiteMove.ResultingFen]
       } else if (
         !!f.BlackMove &&
-        f.BlackMove?.Move.length !== 0 &&
+        f.BlackMove.Move.length !== 0 &&
         (!f.WhiteMove || f.WhiteMove.Move.length === 0)
       ) {
         return [f.BlackMove.ResultingFen]

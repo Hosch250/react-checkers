@@ -16,7 +16,6 @@ import {
   PdnTurn,
 } from './models/types'
 import Square from './Square'
-import { isValidMove, moveSequence } from './variants/american-checkers'
 
 function getDisplayString(
   variant: ApiMembers,
@@ -231,9 +230,9 @@ function getOnSquareClicked(
       return
     }
 
-    if (isValidMove(state, clickedCoord, controller.Board)) {
+    if (controller.Variant.apiMembers.isValidMove(state, clickedCoord, controller.Board)) {
       let move = [state, clickedCoord]
-      let newBoard = moveSequence(move, controller.Board)!
+      let newBoard = controller.Variant.apiMembers.moveSequence(move, controller.Board)!
 
       let turnHasEnded = controller.Variant.apiMembers.playerTurnEnds(
         [state, clickedCoord],

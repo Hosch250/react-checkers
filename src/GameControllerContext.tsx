@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { GameController, newAmericanCheckersGame } from './models/game-controller'
+import { GameController, newAmericanCheckersGame, newPoolCheckersGame } from './models/game-controller'
 
 const GameControllerContext = React.createContext<
   [GameController, Dispatch<SetStateAction<GameController>>]
@@ -16,7 +16,7 @@ const useGameController = () => {
 }
 
 function GameControllerProvider({ children }: { children: any }) {
-  const [gameController, setGameController] = React.useState(newAmericanCheckersGame)
+  const [gameController, setGameController] = React.useState(newPoolCheckersGame)
 
   return (
     <GameControllerContext.Provider value={[gameController, setGameController]}>

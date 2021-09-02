@@ -49,7 +49,7 @@ function MoveHistory() {
         <legend className="visually-hidden">Move History</legend>
         {value.MoveHistory.map((m, i) => (
           <div className="row" key={m.MoveNumber}>
-            <div className="col-2 text-start">{m.MoveNumber}.</div>
+            <div className="col-1 text-start">{m.MoveNumber}.</div>
             {m.BlackMove?.DisplayString ? (
               <label
                 className="col-5 text-start"
@@ -61,15 +61,15 @@ function MoveHistory() {
                   type="radio"
                   role="button"
                   name="move"
-                  onClick={(_) =>
+                  onClick={(_) => {
                     setState({
                       moveNumber: m.MoveNumber,
                       fen: m.BlackMove!.ResultingFen,
                     })
-                  }
-                  onChange={(_) =>
-                    viewBoardAtTurn(m.MoveNumber, _.target.value)
-                  }
+
+                    viewBoardAtTurn(m.MoveNumber, m.BlackMove!.ResultingFen)
+                  }}
+                  onChange={(_) => {}}
                   checked={
                     (!state && m.MoveNumber === i + 1) ||
                     (state?.moveNumber === m.MoveNumber &&
@@ -96,15 +96,14 @@ function MoveHistory() {
                   type="radio"
                   role="button"
                   name="move"
-                  onClick={(_) =>
+                  onClick={(_) => {
                     setState({
                       moveNumber: m.MoveNumber,
                       fen: m.WhiteMove!.ResultingFen,
                     })
-                  }
-                  onChange={(_) =>
-                    viewBoardAtTurn(m.MoveNumber, _.target.value)
-                  }
+                    viewBoardAtTurn(m.MoveNumber, m.WhiteMove!.ResultingFen)
+                  }}
+                  onChange={(_) => {}}
                   checked={
                     (!state && m.MoveNumber === i + 1) ||
                     (state?.moveNumber === m.MoveNumber &&
