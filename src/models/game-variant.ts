@@ -1,6 +1,7 @@
 import { Coord, Board, Player, Move, Variant, PdnTurn } from './types'
 import * as AmericanCheckersVariant from '../variants/american-checkers'
 import * as PoolCheckersVariant from '../variants/pool-checkers'
+import { curry } from 'lodash'
 
 // export type AiMembers = {
 //   uncheckedMoveSequence: (coord: Coord[], board: Board) => Board
@@ -47,23 +48,6 @@ const PdnMembersPoolCheckers: PdnMembers = {
   pdnBoardCoords: PoolCheckersVariant.pdnBoardCoords,
 }
 
-// with
-// static member AmericanCheckers =
-//     {
-//         pdnBoard = Variants.AmericanCheckers.pdnBoard
-//         pdnBoardCoords = Variants.AmericanCheckers.pdnBoardCoords
-//     }
-// static member AmericanCheckersOptionalJump =
-//     {
-//         pdnBoard = Variants.AmericanCheckers.pdnBoard
-//         pdnBoardCoords = Variants.AmericanCheckers.pdnBoardCoords
-//     }
-// static member PoolCheckers =
-//     {
-//         pdnBoard = Variants.PoolCheckers.pdnBoard
-//         pdnBoardCoords = Variants.PoolCheckers.pdnBoardCoords
-//     }
-
 export type ApiMembers = {
   isValidMove: (startCoord: Coord, endCoord: Coord, board: Board) => boolean
   movePiece: (
@@ -85,17 +69,27 @@ export type ApiMembers = {
     finalBoard: Board,
   ) => boolean
 }
-export const ApiMembersAmericanCheckers: ApiMembers = {
-  isValidMove: AmericanCheckersVariant.isValidMove,
-  movePiece: AmericanCheckersVariant.movePiece,
-  moveSequence: AmericanCheckersVariant.moveSequence,
+const ApiMembersAmericanCheckers: ApiMembers = {
+  isValidMove: curry(AmericanCheckersVariant.isValidMove)(true),
+  movePiece: curry(AmericanCheckersVariant.movePiece)(true),
+  moveSequence: curry(AmericanCheckersVariant.moveSequence)(true),
   isJump: AmericanCheckersVariant.isJump,
   startingPlayer: AmericanCheckersVariant.StartingPlayer,
   winningPlayer: AmericanCheckersVariant.winningPlayer,
   isDrawn: AmericanCheckersVariant.isDrawn,
   playerTurnEnds: AmericanCheckersVariant.playerTurnEnds,
 }
-export const ApiMembersPoolCheckers: ApiMembers = {
+const ApiMembersAmericanCheckersOptionalJump: ApiMembers = {
+  isValidMove: curry(AmericanCheckersVariant.isValidMove)(false),
+  movePiece: curry(AmericanCheckersVariant.movePiece)(false),
+  moveSequence: curry(AmericanCheckersVariant.moveSequence)(false),
+  isJump: AmericanCheckersVariant.isJump,
+  startingPlayer: AmericanCheckersVariant.StartingPlayer,
+  winningPlayer: AmericanCheckersVariant.winningPlayer,
+  isDrawn: AmericanCheckersVariant.isDrawn,
+  playerTurnEnds: AmericanCheckersVariant.playerTurnEnds,
+}
+const ApiMembersPoolCheckers: ApiMembers = {
   isValidMove: PoolCheckersVariant.isValidMove,
   movePiece: PoolCheckersVariant.movePiece,
   moveSequence: PoolCheckersVariant.moveSequence,
@@ -106,18 +100,6 @@ export const ApiMembersPoolCheckers: ApiMembers = {
   playerTurnEnds: PoolCheckersVariant.playerTurnEnds,
 }
 
-// with
-// static member AmericanCheckers =
-//     {
-//         isValidMove = Variants.AmericanCheckers.isValidMove true
-//         movePiece = Variants.AmericanCheckers.movePiece true
-//         moveSequence = Variants.AmericanCheckers.moveSequence true
-//         isJump = Variants.AmericanCheckers.isJump
-//         startingPlayer = Variants.AmericanCheckers.StartingPlayer
-//         winningPlayer = Variants.AmericanCheckers.winningPlayer
-//         isDrawn = Variants.AmericanCheckers.isDrawn
-//         playerTurnEnds = Variants.AmericanCheckers.playerTurnEnds
-//     }
 // static member AmericanCheckersOptionalJump =
 //     {
 //         isValidMove = Variants.AmericanCheckers.isValidMove false
@@ -128,17 +110,6 @@ export const ApiMembersPoolCheckers: ApiMembers = {
 //         winningPlayer = Variants.AmericanCheckers.winningPlayer
 //         isDrawn = Variants.AmericanCheckers.isDrawn
 //         playerTurnEnds = Variants.AmericanCheckers.playerTurnEnds
-//     }
-// static member PoolCheckers =
-//     {
-//         isValidMove = Variants.PoolCheckers.isValidMove
-//         movePiece = Variants.PoolCheckers.movePiece
-//         moveSequence = Variants.PoolCheckers.moveSequence
-//         isJump = Variants.PoolCheckers.isJump
-//         startingPlayer = Variants.PoolCheckers.StartingPlayer
-//         winningPlayer = Variants.PoolCheckers.winningPlayer
-//         isDrawn = Variants.PoolCheckers.isDrawn
-//         playerTurnEnds = Variants.PoolCheckers.playerTurnEnds
 //     }
 
 export type GameVariant = {
@@ -152,30 +123,13 @@ export const GameVariantAmericanCheckers: GameVariant = {
   pdnMembers: PdnMembersAmericanCheckers,
   apiMembers: ApiMembersAmericanCheckers
 }
+export const GameVariantAmericanCheckersOptionalJump: GameVariant = {
+  variant: Variant.AmericanCheckersOptionalJump,
+  pdnMembers: PdnMembersAmericanCheckers,
+  apiMembers: ApiMembersAmericanCheckersOptionalJump
+}
 export const GameVariantPoolCheckers: GameVariant = {
   variant: Variant.PoolCheckers,
   pdnMembers: PdnMembersPoolCheckers,
   apiMembers: ApiMembersPoolCheckers
 }
-// with
-// static member AmericanCheckers =
-//     {
-//         variant = AmericanCheckers
-//         aiMembers = AiMembers.AmericanCheckers
-//         pdnMembers = PdnMembers.AmericanCheckers
-//         apiMembers = ApiMembers.AmericanCheckers
-//     }
-// static member AmericanCheckersOptionalJump =
-//     {
-//         variant = AmericanCheckersOptionalJump
-//         aiMembers = AiMembers.AmericanCheckersOptionalJump
-//         pdnMembers = PdnMembers.AmericanCheckersOptionalJump
-//         apiMembers = ApiMembers.AmericanCheckersOptionalJump
-//     }
-// static member PoolCheckers =
-//     {
-//         variant = PoolCheckers
-//         aiMembers = AiMembers.PoolCheckers
-//         pdnMembers = PdnMembers.PoolCheckers
-//         apiMembers = ApiMembers.PoolCheckers
-//     }

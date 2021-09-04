@@ -283,10 +283,10 @@ function hop(startCoord: Coord, endCoord: Coord, board: Board) {
 }
 
 export function isValidMove(
+  requireJumps: boolean,
   startCoord: Coord,
   endCoord: Coord,
   board: Board,
-  requireJumps = true,
 ) {
   if (!coordExists(startCoord) || !coordExists(endCoord)) {
     return false
@@ -317,12 +317,12 @@ export function isValidMove(
 }
 
 export function movePiece(
+  requireJumps: boolean,
   startCoord: Coord,
   endCoord: Coord,
   board: Board,
-  requireJumps = true,
 ) {
-  if (isValidMove(startCoord, endCoord, board, requireJumps)) {
+  if (isValidMove(requireJumps, startCoord, endCoord, board)) {
     switch (Math.abs(startCoord.Row - endCoord.Row)) {
       case 1:
         return hop(startCoord, endCoord, board)
@@ -337,19 +337,19 @@ export function movePiece(
 }
 
 export function moveSequence(
+  requireJumps: boolean,
   coords: Move,
   board: Board | undefined,
-  requireJumps = true,
 ): Board | undefined {
   if (!board) {
     return undefined
   }
 
   if (coords.length >= 3) {
-    let newBoard = movePiece(coords[0], coords[1], board, requireJumps)
-    return moveSequence(tail(coords), newBoard, requireJumps)
+    let newBoard = movePiece(requireJumps, coords[0], coords[1], board)
+    return moveSequence(requireJumps, tail(coords), newBoard)
   } else {
-    return movePiece(coords[0], coords[1], board, requireJumps)
+    return movePiece(requireJumps, coords[0], coords[1], board)
   }
 }
 

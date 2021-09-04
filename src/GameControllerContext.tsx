@@ -1,5 +1,6 @@
+import { cloneDeep } from 'lodash'
 import React, { Dispatch, SetStateAction } from 'react'
-import { GameController, newAmericanCheckersGame, newPoolCheckersGame } from './models/game-controller'
+import { GameController, newAmericanCheckersGame } from './models/game-controller'
 
 const GameControllerContext = React.createContext<
   [GameController, Dispatch<SetStateAction<GameController>>]
@@ -16,7 +17,7 @@ const useGameController = () => {
 }
 
 function GameControllerProvider({ children }: { children: any }) {
-  const [gameController, setGameController] = React.useState(newPoolCheckersGame)
+  const [gameController, setGameController] = React.useState(cloneDeep(newAmericanCheckersGame))
 
   return (
     <GameControllerContext.Provider value={[gameController, setGameController]}>

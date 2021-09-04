@@ -2,6 +2,9 @@ import { useGameController } from './GameControllerContext'
 import { Player, Variant } from './models/types'
 import wpi from './Assets/WhitePlayerIcon.svg'
 import bpi from './Assets/BlackPlayerIcon.svg'
+import Button from 'react-bootstrap/esm/Button'
+import NewGameModal from './NewGameModal'
+import { useState } from 'react'
 
 function GameInfo() {
   const { value } = useGameController()
@@ -34,11 +37,17 @@ function GameInfo() {
       variantName = 'American Checkers Optional Jump'
       break
   }
+  
+  const showState = useState(false)
 
   return (
-    <div className="border border-dark p-2 py-1">
-      <div className="fw-bold">{variantName}</div>
-      <div className={value.CurrentPlayer === Player.White ? 'fw-bold' : ''}>
+    <div className="border border-dark">
+      <div className="fw-bold px-2">{variantName}</div>
+      <div
+        className={`px-2 ${
+          value.CurrentPlayer === Player.White ? 'fw-bold' : ''
+        }`}
+      >
         <img
           src={wpi}
           style={{ verticalAlign: 'middle', height: 15 }}
@@ -46,7 +55,11 @@ function GameInfo() {
         />{' '}
         Human
       </div>
-      <div className={value.CurrentPlayer === Player.Black ? 'fw-bold' : ''}>
+      <div
+        className={`px-2 ${
+          value.CurrentPlayer === Player.Black ? 'fw-bold' : ''
+        }`}
+      >
         <img
           src={bpi}
           style={{ verticalAlign: 'middle', height: 15 }}
@@ -55,6 +68,15 @@ function GameInfo() {
         Human
       </div>
       <div className="text-center">{winStatus}</div>
+      <Button
+        variant="secondary"
+        onClick={(_) => showState[1](true)}
+        className="w-100"
+      >
+        <i className="bi-plus-circle me-2"></i>
+        <span>New Game</span>
+      </Button>
+      <NewGameModal showState={showState} />
     </div>
   )
 }

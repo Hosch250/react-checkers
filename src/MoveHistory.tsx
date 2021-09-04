@@ -2,7 +2,7 @@ import { last } from 'lodash'
 import React from 'react'
 import { useGameController } from './GameControllerContext'
 import { GameController } from './models/game-controller'
-import { controllerFromFen, createFen } from './models/pdn'
+import { controllerFromFen } from './models/pdn'
 import { PdnTurn } from './models/types'
 import './MoveHistory.css'
 
@@ -40,8 +40,34 @@ function MoveHistory() {
   const [state, setState] = React.useState<
     { moveNumber: number; fen: string } | undefined
   >(() => undefined)
+  const [showContextMenu, setShowContextMenu] = React.useState<{
+    show: boolean
+    moveNumber?: number
+    fen?: string
+    x?: number
+    y?: number
+  }>({ show: false })
   const { value, onChange } = useGameController()
   let viewBoardAtTurn = getViewBoardAtTurn(value, onChange, setState)
+
+  function handleOnRightClick(
+    ev: React.MouseEvent,
+    moveNumber: number,
+    fen: string,
+  ) {
+    ev.preventDefault()
+    setShowContextMenu({
+      show: true,
+      moveNumber,
+      fen,
+      x: ev.pageX,
+      y: ev.pageY,
+    })
+    setState({
+      moveNumber,
+      fen,
+    })
+  }
 
   return (
     <div className="MoveHistory">
@@ -51,79 +77,161 @@ function MoveHistory() {
           <div className="row" key={m.MoveNumber}>
             <div className="col-1 text-start">{m.MoveNumber}.</div>
             {m.BlackMove?.DisplayString ? (
-              <label
-                className="col-5 text-start"
-                title={m.BlackMove.DisplayString}
-              >
-                <input
-                  className="d-none"
-                  value={m.BlackMove.ResultingFen}
-                  type="radio"
-                  role="button"
-                  name="move"
-                  onClick={(_) => {
-                    setState({
-                      moveNumber: m.MoveNumber,
-                      fen: m.BlackMove!.ResultingFen,
-                    })
-
-                    viewBoardAtTurn(m.MoveNumber, m.BlackMove!.ResultingFen)
-                  }}
-                  onChange={(_) => {}}
-                  checked={
-                    (!state && m.MoveNumber === i + 1) ||
-                    (state?.moveNumber === m.MoveNumber &&
-                      m.BlackMove.ResultingFen === state.fen)
+              <div className="col-5">
+                <label
+                  className="col-5 text-start"
+                  title={m.BlackMove.DisplayString}
+                  onContextMenu={(ev) =>
+                    handleOnRightClick(
+                      ev,
+                      m.MoveNumber,
+                      m.BlackMove!.ResultingFen,
+                    )
                   }
-                />
-                <span className="d-inline-block px-1">
-                  {m.BlackMove.Move.length > 3
-                    ? `${m.BlackMove.Move[0]}…${last(m.BlackMove.Move)}`
-                    : m.BlackMove.DisplayString}
-                </span>
-              </label>
+                >
+                  <input
+                    className="d-none"
+                    value={m.BlackMove.ResultingFen}
+                    type="radio"
+                    role="button"
+                    name="move"
+                    onClick={(_) => {
+                      setState({
+                        moveNumber: m.MoveNumber,
+                        fen: m.BlackMove!.ResultingFen,
+                      })
+
+                      viewBoardAtTurn(m.MoveNumber, m.BlackMove!.ResultingFen)
+                    }}
+                    onChange={(_) => {}}
+                    checked={
+                      (!state && m.MoveNumber === i + 1) ||
+                      (state?.moveNumber === m.MoveNumber &&
+                        m.BlackMove.ResultingFen === state.fen)
+                    }
+                  />
+                  <span
+                    className="d-inline-block px-1"
+                    data-movenumber={m.MoveNumber}
+                    data-fen={m.BlackMove.ResultingFen}
+                  >
+                    {m.BlackMove.Move.length > 3
+                      ? `${m.BlackMove.Move[0]}…${last(m.BlackMove.Move)}`
+                      : m.BlackMove.DisplayString}
+                  </span>
+                </label>
+              </div>
             ) : (
               <div className="col-5" />
             )}
             {m.WhiteMove?.DisplayString ? (
-              <label
-                className="col-5 text-start"
-                title={m.WhiteMove.DisplayString}
-              >
-                <input
-                  className="d-none"
-                  value={m.WhiteMove.ResultingFen}
-                  type="radio"
-                  role="button"
-                  name="move"
-                  onClick={(_) => {
-                    setState({
-                      moveNumber: m.MoveNumber,
-                      fen: m.WhiteMove!.ResultingFen,
-                    })
-                    viewBoardAtTurn(m.MoveNumber, m.WhiteMove!.ResultingFen)
-                  }}
-                  onChange={(_) => {}}
-                  checked={
-                    (!state && m.MoveNumber === i + 1) ||
-                    (state?.moveNumber === m.MoveNumber &&
-                      m.WhiteMove.ResultingFen === state.fen)
+              <div className="col-5">
+                <label
+                  className="text-start"
+                  title={m.WhiteMove.DisplayString}
+                  onContextMenu={(ev) =>
+                    handleOnRightClick(
+                      ev,
+                      m.MoveNumber,
+                      m.WhiteMove!.ResultingFen,
+                    )
                   }
-                />
-                <span className="d-inline-block px-1">
-                  {m.WhiteMove.Move.length > 3
-                    ? `${m.WhiteMove.Move[0]}…${last(m.WhiteMove.Move)}`
-                    : m.WhiteMove.DisplayString}
-                </span>
-              </label>
+                >
+                  <input
+                    className="d-none"
+                    value={m.WhiteMove.ResultingFen}
+                    type="radio"
+                    role="button"
+                    name="move"
+                    onClick={(_) => {
+                      setState({
+                        moveNumber: m.MoveNumber,
+                        fen: m.WhiteMove!.ResultingFen,
+                      })
+                      viewBoardAtTurn(m.MoveNumber, m.WhiteMove!.ResultingFen)
+                    }}
+                    onChange={(_) => {}}
+                    checked={
+                      (!state && m.MoveNumber === i + 1) ||
+                      (state?.moveNumber === m.MoveNumber &&
+                        m.WhiteMove.ResultingFen === state.fen)
+                    }
+                  />
+                  <span
+                    className="d-inline-block px-1"
+                    data-movenumber={m.MoveNumber}
+                    data-fen={m.WhiteMove.ResultingFen}
+                  >
+                    {m.WhiteMove.Move.length > 3
+                      ? `${m.WhiteMove.Move[0]}…${last(m.WhiteMove.Move)}`
+                      : m.WhiteMove.DisplayString}
+                  </span>
+                </label>
+              </div>
             ) : (
               <div className="col-5" />
             )}
           </div>
         ))}
       </fieldset>
+      <MoveContextMenu
+        showContextMenu={showContextMenu}
+        setShowContextMenu={setShowContextMenu}
+      />
     </div>
   )
 }
 
 export default MoveHistory
+
+function MoveContextMenu({
+  showContextMenu,
+  setShowContextMenu,
+}: {
+  showContextMenu: {
+    show: boolean
+    moveNumber?: number
+    fen?: string
+    x?: number
+    y?: number
+  }
+  setShowContextMenu: React.Dispatch<React.SetStateAction<{ show: boolean }>>
+}) {
+  let toggle = (ev: MouseEvent) => {
+    if (showContextMenu.show) {
+      let target = ev.target as HTMLElement
+      if (!target.dataset['movenumber']) {
+        setShowContextMenu({ show: false })
+      }
+    }
+  }
+  React.useEffect(() => {
+    if (showContextMenu) {
+      document.addEventListener('click', toggle)
+      document.addEventListener('contextmenu', toggle)
+    }
+    return () => {
+      document.removeEventListener('click', toggle)
+      document.removeEventListener('contextmenu', toggle)
+    }
+  })
+
+  let copyFen = () => {
+    navigator.clipboard.writeText(showContextMenu.fen!)
+  }
+
+  return (
+    <ul
+      className={`dropdown-menu position-absolute ${
+        showContextMenu.show ? 'd-block' : ''
+      }`}
+      style={{ top: showContextMenu.y, left: showContextMenu.x }}
+    >
+      <li>
+        <button className="dropdown-item" onClick={copyFen}>
+          Copy FEN
+        </button>
+      </li>
+    </ul>
+  )
+}

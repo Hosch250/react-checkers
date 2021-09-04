@@ -130,7 +130,6 @@ export function getJumpTarget(
     currentSquare.Player !== currentPlayer &&
     !nextSquare
   ) {
-    console.log('canJumpTo', nextCoord)
     return nextCoord
   } else {
     return getJumpTarget(currentPlayer, nextCoord, rowSign, colSign, board)
@@ -366,9 +365,6 @@ function jumpAvailable(player: Player, board: Board) {
   }
 
   function loop(coord: Coord | undefined): boolean {
-    if (!!coord && pieceHasJump(coord.Row, coord.Column)) {
-      console.log('PIECE HAS JUMP', coord)
-    }
     return !coord
       ? false
       : pieceHasJump(coord.Row, coord.Column)
@@ -431,8 +427,8 @@ function oneVsThreeKingRule(fen: string) {
     .filter((f) => f !== '' && f[0] === 'K')
 
   return (
-    (whiteKings.length === 1 && blackKings.length === 3) ||
-    (whiteKings.length === 3 && blackKings.length === 1)
+    (whiteKings.length === 1 && blackKings.length >= 3) ||
+    (whiteKings.length >= 3 && blackKings.length === 1)
   )
 }
 
@@ -541,13 +537,6 @@ export function isValidMove(startCoord: Coord, endCoord: Coord, board: Board) {
     ((isValidHop(startCoord, endCoord, board) &&
       !jumpAvailable(square(startCoord, board)!.Player, board)) ||
       isValidJump(startCoord, endCoord, board))
-  console.log('isValidHop', isValidHop(startCoord, endCoord, board))
-  console.log(
-    '!jumpAvailable',
-    !jumpAvailable(square(startCoord, board)!.Player, board),
-  )
-  console.log('isValidJump', isValidJump(startCoord, endCoord, board))
-  console.log('isValidMove', isValidMove)
   return isValidMove
 }
 

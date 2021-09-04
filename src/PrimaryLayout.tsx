@@ -6,6 +6,7 @@ import Nav from 'react-bootstrap/esm/Nav'
 import Navbar from 'react-bootstrap/esm/Navbar'
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
+import BoardEditorPage from './BoardEditorPage'
 
 function PrimaryLayout() {
   return (
@@ -56,7 +57,9 @@ function PrimaryLayout() {
                 <Route path="/" exact>
                   <GamePage />
                 </Route>
-                <Route path="/editor">{/* <BoardEditorPage /> */}</Route>
+                <Route path="/editor">
+                  <BoardEditorPage />
+                </Route>
                 <Route path="/rules">
                   <RulesPage />
                 </Route>
