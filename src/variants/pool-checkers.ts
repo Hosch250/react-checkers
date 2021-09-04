@@ -1,4 +1,4 @@
-import { cloneDeep, countBy, last, tail, keys, dropWhile } from 'lodash'
+import { cloneDeep, countBy, last, tail, keys, dropWhile, isEqual } from 'lodash'
 import {
   Board,
   Coord,
@@ -211,7 +211,7 @@ function isValidKingHop(startCoord: Coord, endCoord: Coord, board: Board) {
   )
 
   return hopTargets.some(
-    (s) => s.Row === endCoord.Row && s.Column === endCoord.Column,
+    (s) => isEqual(s, endCoord)
   )
 }
 
@@ -249,8 +249,7 @@ function isValidKingJump(startCoord: Coord, endCoord: Coord, board: Board) {
 
   return (
     !!jumpTarget &&
-    jumpTarget.Row === endCoord.Row &&
-    jumpTarget.Column === endCoord.Column &&
+    isEqual(jumpTarget, endCoord.Row) &&
     !square(endCoord, board) &&
     !!jumpedPiece &&
     jumpedPiece.Player !== piece.Player
