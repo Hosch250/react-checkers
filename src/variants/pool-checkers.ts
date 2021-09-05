@@ -1,4 +1,12 @@
-import { cloneDeep, countBy, last, tail, keys, dropWhile, isEqual } from 'lodash'
+import {
+  cloneDeep,
+  countBy,
+  last,
+  tail,
+  keys,
+  dropWhile,
+  isEqual,
+} from 'lodash'
 import {
   Board,
   Coord,
@@ -191,6 +199,7 @@ function isValidCheckerHop(startCoord: Coord, endCoord: Coord, board: Board) {
   let piece = square(startCoord, board)!
 
   return (
+    Math.abs(startCoord.Row - endCoord.Row) === 1 &&
     checkMoveDirection(piece, startCoord, endCoord, board) &&
     !square(endCoord, board)
   )
@@ -210,9 +219,7 @@ function isValidKingHop(startCoord: Coord, endCoord: Coord, board: Board) {
     board,
   )
 
-  return hopTargets.some(
-    (s) => isEqual(s, endCoord)
-  )
+  return hopTargets.some((s) => isEqual(s, endCoord))
 }
 
 function isValidCheckerJump(startCoord: Coord, endCoord: Coord, board: Board) {
@@ -249,7 +256,7 @@ function isValidKingJump(startCoord: Coord, endCoord: Coord, board: Board) {
 
   return (
     !!jumpTarget &&
-    isEqual(jumpTarget, endCoord.Row) &&
+    isEqual(jumpTarget, endCoord) &&
     !square(endCoord, board) &&
     !!jumpedPiece &&
     jumpedPiece.Player !== piece.Player
@@ -533,9 +540,9 @@ export function isValidMove(startCoord: Coord, endCoord: Coord, board: Board) {
     coordExists(endCoord) &&
     moveIsDiagonal(startCoord, endCoord) &&
     !!square(startCoord, board) &&
-    ((isValidHop(startCoord, endCoord, board) &&
-      !jumpAvailable(square(startCoord, board)!.Player, board)) ||
-      isValidJump(startCoord, endCoord, board))
+    (isValidJump(startCoord, endCoord, board) ||
+      (isValidHop(startCoord, endCoord, board) &&
+        !jumpAvailable(square(startCoord, board)!.Player, board)))
   return isValidMove
 }
 
