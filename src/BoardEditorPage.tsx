@@ -14,47 +14,87 @@ import {
   whiteKing,
 } from './models/types'
 import Board from './Board'
-import GameControllerProvider from './GameControllerContext'
 import { isEqual } from 'lodash'
 import FenViewer from './FenViewer'
 import EditorOptions from './EditorOptions'
-import BoardEditorProvider from './BoardEditorContext'
+import { BoardEditorInfo, useBoardEditor } from './BoardEditorContext'
+import React from 'react'
+import Button from 'react-bootstrap/esm/Button'
+
+function setPieceAt(
+  editor: BoardEditorInfo,
+  piece: PieceModel | undefined,
+  updateEditor: (editor: BoardEditorInfo) => void,
+  setSelectedPiece: (piece: PieceModel | undefined) => void
+) {
+  function squareClicked(row: number, col: number) {
+    if (!editor.pdnMembers.pdnBoard[row][col]) {
+      setSelectedPiece(undefined)
+      return
+    }
+
+    editor.board[row][col] = piece
+    updateEditor({
+      ...editor,
+    })
+  }
+
+  return squareClicked
+}
 
 function BoardEditorPage() {
+  let { value, onChange } = useBoardEditor()
+  let [selectedPiece, setSelectedPiece] = React.useState<
+    PieceModel | undefined
+  >(undefined)
+
+  let memo = React.useCallback(setPieceAt(value, selectedPiece, onChange, setSelectedPiece), [
+    value, selectedPiece,
+  ])
+
   return (
-    <GameControllerProvider><BoardEditorProvider>
-      <div className="BoardEditorPage">
-        <Row>
-          <Col md="auto" sm={12}>
-            <Piece
-              piece={{ PieceType: PieceType.Checker, Player: Player.White }}
-            />
-            <Piece
-              piece={{ PieceType: PieceType.King, Player: Player.White }}
-            />
-            <Piece
-              piece={{ PieceType: PieceType.Checker, Player: Player.Black }}
-            />
-            <Piece
-              piece={{ PieceType: PieceType.King, Player: Player.Black }}
-            />
-          </Col>
-          <Col md="auto" sm={12}>
-            <Board />
-            <FenViewer />
-          </Col>
-          <Col md="auto" sm={12}>
-            <EditorOptions />
-          </Col>
-        </Row>
-      </div>
-    </BoardEditorProvider></GameControllerProvider>
+    <div className="BoardEditorPage">
+      <Row>
+        <Col md="auto" sm={12}>
+          <Piece
+            piece={{ PieceType: PieceType.Checker, Player: Player.White }}
+            onclick={setSelectedPiece}
+          />
+          <Piece
+            piece={{ PieceType: PieceType.King, Player: Player.White }}
+            onclick={setSelectedPiece}
+          />
+          <Piece
+            piece={{ PieceType: PieceType.Checker, Player: Player.Black }}
+            onclick={setSelectedPiece}
+          />
+          <Piece
+            piece={{ PieceType: PieceType.King, Player: Player.Black }}
+            onclick={setSelectedPiece}
+          />
+          <Button className="w-100 mt-3" variant="secondary" onClick={() => setSelectedPiece(undefined)}>Clear</Button>
+        </Col>
+        <Col md="auto" sm={12}>
+          <Board board={value.board} selectedCoord={undefined} onclick={memo} />
+          <FenViewer />
+        </Col>
+        <Col md="auto" sm={12}>
+          <EditorOptions />
+        </Col>
+      </Row>
+    </div>
   )
 }
 
 export default BoardEditorPage
 
-function Piece({ piece }: { piece: PieceModel }) {
+function Piece({
+  piece,
+  onclick,
+}: {
+  piece: PieceModel
+  onclick: (piece: PieceModel | undefined) => void
+}) {
   let pieceImage = null
   let pieceLabel
   switch (true) {
@@ -101,7 +141,10 @@ function Piece({ piece }: { piece: PieceModel }) {
   }
 
   return (
-    <div className="text-center d-inline-block d-md-block m-sm-1">
+    <div
+      className="text-center d-inline-block d-md-block m-sm-1"
+      onClick={() => onclick(piece)}
+    >
       {pieceImage}
       <div>{pieceLabel}</div>
     </div>

@@ -7,6 +7,8 @@ import Navbar from 'react-bootstrap/esm/Navbar'
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
 import BoardEditorPage from './BoardEditorPage'
+import BoardEditorProvider from './BoardEditorContext'
+import GameControllerProvider from './GameControllerContext'
 
 function PrimaryLayout() {
   return (
@@ -55,10 +57,14 @@ function PrimaryLayout() {
             <React.Suspense fallback={<div>loading...</div>}>
               <Switch>
                 <Route path="/" exact>
-                  <GamePage />
+                  <GameControllerProvider>
+                    <GamePage />
+                  </GameControllerProvider>
                 </Route>
                 <Route path="/editor">
-                  <BoardEditorPage />
+                  <BoardEditorProvider>
+                    <BoardEditorPage />
+                  </BoardEditorProvider>
                 </Route>
                 <Route path="/rules">
                   <RulesPage />

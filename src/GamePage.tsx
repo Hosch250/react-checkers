@@ -1,5 +1,4 @@
-import Board from './Board'
-import GameControllerProvider from './GameControllerContext'
+import GameBoard from "./GameBoard"
 import MoveHistory from './MoveHistory'
 import DisplayWin from './DisplayWin'
 import Row from 'react-bootstrap/esm/Row'
@@ -8,7 +7,6 @@ import GameInfo from './GameInfo'
 
 function GamePage() {
   return (
-    <GameControllerProvider>
       <div className="GamePage">
         <Row className="justify-content-center">
           <Col xs="auto"><DisplayWin /></Col>
@@ -18,14 +16,13 @@ function GamePage() {
             <GameInfo />
           </Col>
           <Col md="auto" sm={12} className="order-1 order-md-3">
-            <Board />
+            <GameBoard />
           </Col>
           <Col md="auto" sm={12} className="d-none d-md-block order-2 order-md-4 overflow-auto" style={{maxHeight: 400}}>
             <MoveHistory />
           </Col>
         </Row>
       </div>
-    </GameControllerProvider>
   )
 }
 

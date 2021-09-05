@@ -1,13 +1,14 @@
 import { cloneDeep } from 'lodash'
 import React, { Dispatch, SetStateAction } from 'react'
 import { newAmericanCheckersGame } from './models/game-controller'
+import { PdnMembers } from './models/game-variant'
 import { Board, Player, Variant } from './models/types'
 
 export type BoardEditorInfo = {
   board: Board,
-  fen: string
   variant: Variant,
-  player: Player
+  player: Player,
+  pdnMembers: PdnMembers
 }
 
 const BoardEditorContext = React.createContext<
@@ -28,9 +29,9 @@ function BoardEditorProvider({ children }: { children: any }) {
   let data = cloneDeep(newAmericanCheckersGame)
   const [boardEditor, setBoardEditor] = React.useState({
     board: data.Board,
-    fen: data.InitialPosition,
     variant: data.Variant.variant,
-    player: data.CurrentPlayer
+    player: data.CurrentPlayer,
+    pdnMembers: data.Variant.pdnMembers
   })
 
   return (

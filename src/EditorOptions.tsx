@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash'
+import React from 'react'
 import { useBoardEditor } from './BoardEditorContext'
 import {
   GameController,
@@ -30,15 +31,18 @@ function EditorOptions() {
     }
   }
 
+  let [position, setPosition] = React.useState('intial')
+
   return (
     <>
       <div className="form-floating mb-2">
         <select
           className="form-select"
           id="variant"
-          onChange={(_) =>
+          onChange={(_) => {
             onChange({ ...value, variant: parseInt(_.target.value) })
-          }
+            setBoard(position)
+          }}
         >
           <option value={Variant.AmericanCheckers}>American Checkers</option>
           <option value={Variant.PoolCheckers}>Pool Checkers</option>
@@ -62,8 +66,11 @@ function EditorOptions() {
         <select
           className="form-select"
           id="position"
-          defaultValue="initial"
-          onChange={(_) => setBoard(_.target.value)}
+          value={position}
+          onChange={(_) => {
+            setPosition(_.target.value)
+            setBoard(_.target.value)
+          }}
         >
           <option value="initial">Initial</option>
           <option value="empty">Empty</option>
