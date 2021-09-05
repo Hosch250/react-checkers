@@ -1,0 +1,11 @@
+fieldset > legend {
+    opacity: .65;
+    transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+    font-size: 16px;
+    position: relative;
+    top: 0;
+    line-height: 24px;
+    left: 0;
+    transform-origin: 0px 0px;
+    margin-bottom: -.5rem;
+}

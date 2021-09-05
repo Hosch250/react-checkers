@@ -18,7 +18,7 @@ function GamePage() {
           <Col md="auto" sm={12} className="order-1 order-md-3">
             <GameBoard />
           </Col>
-          <Col md="auto" sm={12} className="d-none d-md-block order-2 order-md-4 overflow-auto" style={{maxHeight: 400}}>
+          <Col md={3} sm={12} className="d-none d-md-block order-2 order-md-4 overflow-auto" style={{maxHeight: 400}}>
             <MoveHistory />
           </Col>
         </Row>

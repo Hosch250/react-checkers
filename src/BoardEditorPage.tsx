@@ -57,19 +57,23 @@ function BoardEditorPage() {
       <Row>
         <Col md="auto" sm={12}>
           <Piece
-            piece={{ PieceType: PieceType.Checker, Player: Player.White }}
+            piece={whiteChecker}
+            isSelected={isEqual(selectedPiece, whiteChecker)}
             onclick={setSelectedPiece}
           />
           <Piece
-            piece={{ PieceType: PieceType.King, Player: Player.White }}
+            piece={whiteKing}
+            isSelected={isEqual(selectedPiece, whiteKing)}
             onclick={setSelectedPiece}
           />
           <Piece
-            piece={{ PieceType: PieceType.Checker, Player: Player.Black }}
+            piece={blackChecker}
+            isSelected={isEqual(selectedPiece, blackChecker)}
             onclick={setSelectedPiece}
           />
           <Piece
-            piece={{ PieceType: PieceType.King, Player: Player.Black }}
+            piece={blackKing}
+            isSelected={isEqual(selectedPiece, blackKing)}
             onclick={setSelectedPiece}
           />
           <Button className="w-100 mt-3" variant="secondary" onClick={() => setSelectedPiece(undefined)}>Clear</Button>
@@ -90,9 +94,11 @@ export default BoardEditorPage
 
 function Piece({
   piece,
+  isSelected,
   onclick,
 }: {
-  piece: PieceModel
+  piece: PieceModel,
+  isSelected: boolean,
   onclick: (piece: PieceModel | undefined) => void
 }) {
   let pieceImage = null
@@ -146,7 +152,7 @@ function Piece({
       onClick={() => onclick(piece)}
     >
       {pieceImage}
-      <div>{pieceLabel}</div>
+      <div className={(isSelected ? 'fw-bold' : '')}>{pieceLabel}</div>
     </div>
   )
 }

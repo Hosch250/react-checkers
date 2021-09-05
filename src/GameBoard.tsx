@@ -48,6 +48,8 @@ function getPdnForMove(
   let moveNumber =
     gameController.CurrentPlayer === Player.Black
       ? gameHistory.length + 1
+      : gameHistory.length === 0  // check if we're starting from a white-turn position
+      ? 1
       : gameHistory.length
 
   let piece = square(move[0], originalBoard)

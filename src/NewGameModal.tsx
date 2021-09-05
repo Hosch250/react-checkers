@@ -5,45 +5,60 @@ import Form from 'react-bootstrap/esm/Form'
 import Modal from 'react-bootstrap/esm/Modal'
 import { useGameController } from './GameControllerContext'
 import {
+  GameController,
   newAmericanCheckersGame,
   newAmericanCheckersOptionalJumpGame,
   newPoolCheckersGame,
 } from './models/game-controller'
+import { controllerFromFen } from './models/pdn'
 import { Variant } from './models/types'
+import './NewGameModal.css'
 
 function NewGameModal({
   showState,
 }: {
-  showState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+  showState: [boolean, (value: boolean) => void]
 }) {
   let [show, setShow] = showState
   const { onChange } = useGameController()
 
-  const [selectedVariant, setSelectedVariant] = useState(
-    Variant.AmericanCheckers,
-  )
+  const [form, setForm] = useState({
+    variant: Variant.AmericanCheckers,
+    position: 'default',
+    fen: '',
+  })
 
-  const createNewGame = (ev: React.FormEvent) => {
+  function createNewGame(ev: React.FormEvent) {
     ev.preventDefault()
 
-    switch (selectedVariant) {
+    let controller: GameController
+    switch (form.variant) {
       case Variant.AmericanCheckers:
-        onChange(cloneDeep(newAmericanCheckersGame))
+        controller = cloneDeep(newAmericanCheckersGame)
         break
       case Variant.AmericanCheckersOptionalJump:
-        onChange(cloneDeep(newAmericanCheckersOptionalJumpGame))
+        controller = cloneDeep(newAmericanCheckersOptionalJumpGame)
         break
       case Variant.PoolCheckers:
-        onChange(cloneDeep(newPoolCheckersGame))
+        controller = cloneDeep(newPoolCheckersGame)
         break
     }
+    
+    if (form.position === 'fen') {
+      controller = controllerFromFen(controller.Variant, form.fen)
+    }
 
+    onChange(controller)
     setShow(false)
     resetForm()
   }
 
-  const resetForm = () => {
-    setSelectedVariant(Variant.AmericanCheckers)
+  function resetForm() {
+    setForm({
+      variant: Variant.AmericanCheckers,
+      position: 'default',
+      fen: '',
+    })
   }
 
   return (
@@ -57,7 +72,7 @@ function NewGameModal({
             <select
               id="variant"
               onChange={(ev) =>
-                setSelectedVariant(parseInt(ev.target.value) as Variant)
+                setForm({ ...form, variant: parseInt(ev.target.value) })
               }
               className="form-select"
             >
@@ -71,6 +86,46 @@ function NewGameModal({
             </select>
             <label htmlFor="variant">Variant</label>
           </div>
+          <fieldset className="border-start ps-3 mt-3">
+            <legend>Position</legend>
+            <label className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="position"
+                value="default"
+                defaultChecked
+                onChange={(_) => setForm({ ...form, position: _.target.value })}
+              />
+              Default
+            </label>
+            <label className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="position"
+                value="fen"
+                onChange={(_) => setForm({ ...form, position: _.target.value })}
+              />
+              From FEN
+            </label>
+            <div
+              className={`input-group mt-2 ${
+                form.position === 'default' ? 'd-none' : ''
+              }`}
+            >
+              <span className="input-group-text" id="basic-addon1">
+                FEN
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                aria-label="FEN"
+                aria-describedby="basic-addon1"
+                onChange={(_) => setForm({ ...form, fen: _.target.value })}
+              />
+            </div>
+          </fieldset>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="dark" type="submit">
