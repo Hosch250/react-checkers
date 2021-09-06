@@ -5,8 +5,6 @@ import bk from './Assets/BlackKing.svg'
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
 import {
-  PieceType,
-  Player,
   Piece as PieceModel,
   blackChecker,
   blackKing,

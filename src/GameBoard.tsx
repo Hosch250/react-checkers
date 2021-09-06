@@ -1,5 +1,5 @@
 import React from 'react'
-import { last } from 'lodash'
+import { cloneDeep, last } from 'lodash'
 import { GameController } from './models/game-controller'
 import { ApiMembers } from './models/game-variant'
 import { createFen } from './models/pdn'
@@ -24,10 +24,10 @@ function getDisplayString(
 }
 
 function getLastFen(turn: PdnTurn) {
-  if (!!turn.WhiteMove) {
-    return turn.WhiteMove.ResultingFen
-  } else if (!!turn.BlackMove) {
-    return turn.BlackMove.ResultingFen
+  if (!!turn.whiteMove) {
+    return turn.whiteMove.resultingFen
+  } else if (!!turn.blackMove) {
+    return turn.blackMove.resultingFen
   } else {
     return undefined
   }
@@ -39,14 +39,14 @@ function getPdnForMove(
   boardFen: string,
   originalBoard: BoardType,
 ) {
-  let gameHistory = gameController.MoveHistory
+  let gameHistory = gameController.moveHistory
   let pdnMove = move.map(
-    (m) => square(m, gameController.Variant.pdnMembers.pdnBoard)!,
+    (m) => square(m, gameController.variant.pdnMembers.pdnBoard)!,
   )
 
   let lastTurn = last(gameHistory)
   let moveNumber =
-    gameController.CurrentPlayer === Player.Black
+    gameController.currentPlayer === Player.Black
       ? gameHistory.length + 1
       : gameHistory.length === 0  // check if we're starting from a white-turn position
       ? 1
@@ -55,44 +55,44 @@ function getPdnForMove(
   let piece = square(move[0], originalBoard)
 
   let blackMove =
-    gameController.CurrentPlayer === Player.Black
+    gameController.currentPlayer === Player.Black
       ? {
-          Move: pdnMove,
-          ResultingFen: boardFen,
-          DisplayString: getDisplayString(
-            gameController.Variant.apiMembers,
+          move: pdnMove,
+          resultingFen: boardFen,
+          displayString: getDisplayString(
+            gameController.variant.apiMembers,
             pdnMove,
             move,
             originalBoard,
           ),
-          PieceTypeMoved: piece!.PieceType,
-          Player: Player.Black,
-          IsJump: gameController.Variant.apiMembers.isJump(move, originalBoard),
+          pieceTypeMoved: piece!.pieceType,
+          player: Player.Black,
+          isJump: gameController.variant.apiMembers.isJump(move, originalBoard),
         }
-      : !!lastTurn && lastTurn.MoveNumber === moveNumber
-      ? last(gameHistory)!.BlackMove
+      : !!lastTurn && lastTurn.moveNumber === moveNumber
+      ? last(gameHistory)!.blackMove
       : undefined
 
   let whiteMove =
-    gameController.CurrentPlayer === Player.White
+    gameController.currentPlayer === Player.White
       ? {
-          Move: pdnMove,
-          ResultingFen: boardFen,
-          DisplayString: getDisplayString(
-            gameController.Variant.apiMembers,
+          move: pdnMove,
+          resultingFen: boardFen,
+          displayString: getDisplayString(
+            gameController.variant.apiMembers,
             pdnMove,
             move,
             originalBoard,
           ),
-          PieceTypeMoved: piece!.PieceType,
-          Player: Player.White,
-          IsJump: gameController.Variant.apiMembers.isJump(move, originalBoard),
+          pieceTypeMoved: piece!.pieceType,
+          player: Player.White,
+          isJump: gameController.variant.apiMembers.isJump(move, originalBoard),
         }
-      : !!lastTurn && lastTurn.MoveNumber === moveNumber
-      ? last(gameHistory)!.WhiteMove
+      : !!lastTurn && lastTurn.moveNumber === moveNumber
+      ? last(gameHistory)!.whiteMove
       : undefined
 
-  return { MoveNumber: moveNumber, BlackMove: blackMove, WhiteMove: whiteMove }
+  return { moveNumber: moveNumber, blackMove: blackMove, whiteMove: whiteMove }
 }
 
 function getPdnForContinuedMove(
@@ -101,58 +101,58 @@ function getPdnForContinuedMove(
   boardFen: string,
   originalBoard: BoardType,
 ) {
-  let gameHistory = gameController.MoveHistory
+  let gameHistory = gameController.moveHistory
 
   let lastMovePdn = last(gameHistory)!
   let pdnMove = move.map(
-    (m) => square(m, gameController.Variant.pdnMembers.pdnBoard)!,
+    (m) => square(m, gameController.variant.pdnMembers.pdnBoard)!,
   )
 
-  let moveNumber = lastMovePdn.MoveNumber
+  let moveNumber = lastMovePdn.moveNumber
 
   let piece = square(move[0], originalBoard)
 
   let blackMove
-  if (gameController.CurrentPlayer === Player.Black) {
-    let newPdnMove = [...lastMovePdn.BlackMove!.Move, ...pdnMove.slice(1)]
+  if (gameController.currentPlayer === Player.Black) {
+    let newPdnMove = [...lastMovePdn.blackMove!.move, ...pdnMove.slice(1)]
     blackMove = {
-      Move: newPdnMove,
-      ResultingFen: boardFen,
-      DisplayString: getDisplayString(
-        gameController.Variant.apiMembers,
+      move: newPdnMove,
+      resultingFen: boardFen,
+      displayString: getDisplayString(
+        gameController.variant.apiMembers,
         newPdnMove,
         move,
         originalBoard,
       ),
-      PieceTypeMoved: piece!.PieceType,
-      Player: Player.Black,
-      IsJump: gameController.Variant.apiMembers.isJump(move, originalBoard),
+      pieceTypeMoved: piece!.pieceType,
+      player: Player.Black,
+      isJump: gameController.variant.apiMembers.isJump(move, originalBoard),
     }
   } else {
-    blackMove = lastMovePdn.BlackMove
+    blackMove = lastMovePdn.blackMove
   }
 
   let whiteMove
-  if (gameController.CurrentPlayer === Player.White) {
-    let newPdnMove = [...lastMovePdn.WhiteMove!.Move, ...pdnMove.slice(1)]
+  if (gameController.currentPlayer === Player.White) {
+    let newPdnMove = [...lastMovePdn.whiteMove!.move, ...pdnMove.slice(1)]
     whiteMove = {
-      Move: newPdnMove,
-      ResultingFen: boardFen,
-      DisplayString: getDisplayString(
-        gameController.Variant.apiMembers,
+      move: newPdnMove,
+      resultingFen: boardFen,
+      displayString: getDisplayString(
+        gameController.variant.apiMembers,
         newPdnMove,
         move,
         originalBoard,
       ),
-      PieceTypeMoved: piece!.PieceType,
-      Player: Player.White,
-      IsJump: gameController.Variant.apiMembers.isJump(move, originalBoard),
+      pieceTypeMoved: piece!.pieceType,
+      player: Player.White,
+      isJump: gameController.variant.apiMembers.isJump(move, originalBoard),
     }
   } else {
-    whiteMove = lastMovePdn.WhiteMove
+    whiteMove = lastMovePdn.whiteMove
   }
 
-  return { MoveNumber: moveNumber, BlackMove: blackMove, WhiteMove: whiteMove }
+  return { moveNumber: moveNumber, blackMove: blackMove, whiteMove: whiteMove }
 }
 
 function updateGameHistory(
@@ -161,23 +161,23 @@ function updateGameHistory(
   boardFen: string,
   originalBoard: BoardType,
 ) {
-  let isContinuedMove = !!gameController.CurrentCoord
+  let isContinuedMove = !!gameController.currentCoord
 
   let newTurnValue = isContinuedMove
     ? getPdnForContinuedMove(gameController, move, boardFen, originalBoard)
     : getPdnForMove(gameController, move, boardFen, originalBoard)
 
-  if (gameController.CurrentPlayer === Player.Black && !isContinuedMove) {
-    return [...gameController.MoveHistory, newTurnValue]
-  } else if (gameController.MoveHistory.length === 0) {
+  if (gameController.currentPlayer === Player.Black && !isContinuedMove) {
+    return [...gameController.moveHistory, newTurnValue]
+  } else if (gameController.moveHistory.length === 0) {
     return [newTurnValue]
   } else {
-    gameController.MoveHistory.splice(
-      gameController.MoveHistory.length - 1,
+    gameController.moveHistory.splice(
+      gameController.moveHistory.length - 1,
       1,
       newTurnValue,
     )
-    return [...gameController.MoveHistory]
+    return [...gameController.moveHistory]
   }
 }
 
@@ -187,17 +187,17 @@ export function getOnSquareClicked(
   setState: React.Dispatch<React.SetStateAction<Coord | undefined>>,
   updateController: (value: GameController) => void,
 ) {
-  let onclick = (row: number, column: number) => {
+  function onclick(row: number, column: number) {
     const clickedCoord: Coord = {
-      Row: row,
-      Column: column,
+      row: row,
+      column: column,
     }
 
     if (
-      controller.CurrentPlayer ===
-      square(clickedCoord, controller.Board)?.Player
+      controller.currentPlayer ===
+      square(clickedCoord, controller.board)?.player
     ) {
-      if (state?.Row === row && state.Column === column) {
+      if (state?.row === row && state.column === column) {
         setState(undefined)
       } else {
         setState(clickedCoord)
@@ -210,57 +210,61 @@ export function getOnSquareClicked(
     }
 
     if (
-      controller.MoveHistory.length !== 0 &&
-      getLastFen(last(controller.MoveHistory)!) !==
+      controller.moveHistory.length !== 0 &&
+      getLastFen(last(controller.moveHistory)!) !==
         createFen(
-          controller.Variant.pdnMembers,
-          controller.CurrentPlayer,
-          controller.Board,
+          controller.variant.pdnMembers,
+          controller.currentPlayer,
+          controller.board,
         )
     ) {
       return
     }
 
     if (
-      controller.Variant.apiMembers.isValidMove(
+      controller.variant.apiMembers.isValidMove(
         state,
         clickedCoord,
-        controller.Board,
+        controller.board,
       )
     ) {
       let move = [state, clickedCoord]
-      let newBoard = controller.Variant.apiMembers.moveSequence(
+      let newBoard = controller.variant.apiMembers.moveSequence(
         move,
-        controller.Board,
+        controller.board,
       )!
 
-      let turnHasEnded = controller.Variant.apiMembers.playerTurnEnds(
+      let turnHasEnded = controller.variant.apiMembers.playerTurnEnds(
         [state, clickedCoord],
-        controller.Board,
+        controller.board,
         newBoard,
       )
       let nextPlayer = !turnHasEnded
-        ? controller.CurrentPlayer
-        : controller.CurrentPlayer === Player.White
+        ? controller.currentPlayer
+        : controller.currentPlayer === Player.White
         ? Player.Black
         : Player.White
 
       let history = updateGameHistory(
         controller,
         move,
-        createFen(controller.Variant.pdnMembers, nextPlayer, newBoard),
-        controller.Board,
+        createFen(controller.variant.pdnMembers, nextPlayer, newBoard),
+        controller.board,
       )
       let newController = {
         ...controller,
-        Board: newBoard,
-        CurrentPlayer: nextPlayer,
-        CurrentCoord: turnHasEnded ? undefined : clickedCoord,
-        MoveHistory: history,
+        board: newBoard,
+        currentPlayer: nextPlayer,
+        currentCoord: turnHasEnded ? undefined : clickedCoord,
+        moveHistory: history,
       }
 
       updateController(newController)
-      setState(newController.CurrentCoord)
+      setState(newController.currentCoord)
+
+      let apiValue = cloneDeep(newController) as any
+      apiValue.variant = newController.variant.variant
+      console.log(JSON.stringify(apiValue))
     }
   }
 
@@ -275,7 +279,7 @@ export function GameBoard() {
 
   return (
     <Board
-      board={value.Board}
+      board={value.board}
       selectedCoord={state}
       onclick={memo(value, state, setState, onChange)}
     />

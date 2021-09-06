@@ -28,10 +28,10 @@ const useBoardEditor = () => {
 function BoardEditorProvider({ children }: { children: any }) {
   let data = cloneDeep(newAmericanCheckersGame)
   const [boardEditor, setBoardEditor] = React.useState({
-    board: data.Board,
-    variant: data.Variant.variant,
-    player: data.CurrentPlayer,
-    pdnMembers: data.Variant.pdnMembers
+    board: data.board,
+    variant: data.variant.variant,
+    player: data.currentPlayer,
+    pdnMembers: data.variant.pdnMembers
   })
 
   return (

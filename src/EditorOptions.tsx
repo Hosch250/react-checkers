@@ -23,7 +23,7 @@ function EditorOptions() {
           break
       }
 
-      onChange({ ...value, board: newGame!.Board })
+      onChange({ ...value, board: newGame!.board })
     }
 
     if (state === 'empty') {

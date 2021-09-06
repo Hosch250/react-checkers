@@ -45,7 +45,7 @@ function NewGameModal({
     }
     
     if (form.position === 'fen') {
-      controller = controllerFromFen(controller.Variant, form.fen)
+      controller = controllerFromFen(controller.variant, form.fen)
     }
 
     onChange(controller)

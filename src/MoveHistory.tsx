@@ -8,10 +8,10 @@ import { MoveContextMenu } from './MoveContextMenu'
 import './MoveHistory.css'
 
 function getLastFen(turn: PdnTurn) {
-  if (!!turn.WhiteMove) {
-    return turn.WhiteMove.ResultingFen
-  } else if (!!turn.BlackMove) {
-    return turn.BlackMove.ResultingFen
+  if (!!turn.whiteMove) {
+    return turn.whiteMove.resultingFen
+  } else if (!!turn.blackMove) {
+    return turn.blackMove.resultingFen
   } else {
     return undefined
   }
@@ -23,12 +23,12 @@ function getViewBoardAtTurn(
   setState: (value: undefined) => void,
 ) {
   let viewBoardAtTurn = (moveNumber: number, fen: string) => {
-    let board = controllerFromFen(controller.Variant, fen).Board
-    updateController({ ...controller, Board: board })
+    let board = controllerFromFen(controller.variant, fen).Board
+    updateController({ ...controller, board: board })
 
     if (
-      controller.MoveHistory.length === moveNumber &&
-      getLastFen(last(controller.MoveHistory)!) === fen
+      controller.moveHistory.length === moveNumber &&
+      getLastFen(last(controller.moveHistory)!) === fen
     ) {
       setState(undefined)
     }
@@ -74,98 +74,98 @@ function MoveHistory() {
     <div className="MoveHistory">
       <fieldset>
         <legend className="visually-hidden">Move History</legend>
-        {value.MoveHistory.map((m, i) => (
-          <div className="row" key={m.MoveNumber}>
-            <div className="col-1 text-start">{m.MoveNumber}.</div>
-            {m.BlackMove?.DisplayString ? (
+        {value.moveHistory.map((m, i) => (
+          <div className="row" key={m.moveNumber}>
+            <div className="col-1 text-start">{m.moveNumber}.</div>
+            {m.blackMove?.displayString ? (
               <div className="col-5">
                 <label
                   className="col-5 text-start"
-                  title={m.BlackMove.DisplayString}
+                  title={m.blackMove.displayString}
                   onContextMenu={(ev) =>
                     handleOnRightClick(
                       ev,
-                      m.MoveNumber,
-                      m.BlackMove!.ResultingFen,
+                      m.moveNumber,
+                      m.blackMove!.resultingFen,
                     )
                   }
                 >
                   <input
                     className="d-none"
-                    value={m.BlackMove.ResultingFen}
+                    value={m.blackMove.resultingFen}
                     type="radio"
                     role="button"
                     name="move"
                     onClick={(_) => {
                       setState({
-                        moveNumber: m.MoveNumber,
-                        fen: m.BlackMove!.ResultingFen,
+                        moveNumber: m.moveNumber,
+                        fen: m.blackMove!.resultingFen,
                       })
 
-                      viewBoardAtTurn(m.MoveNumber, m.BlackMove!.ResultingFen)
+                      viewBoardAtTurn(m.moveNumber, m.blackMove!.resultingFen)
                     }}
                     onChange={(_) => {}}
                     checked={
-                      (!state && m.MoveNumber === i + 1) ||
-                      (state?.moveNumber === m.MoveNumber &&
-                        m.BlackMove.ResultingFen === state.fen)
+                      (!state && m.moveNumber === i + 1) ||
+                      (state?.moveNumber === m.moveNumber &&
+                        m.blackMove.resultingFen === state.fen)
                     }
                   />
                   <span
                     className="d-inline-block px-1"
-                    data-movenumber={m.MoveNumber}
-                    data-fen={m.BlackMove.ResultingFen}
+                    data-movenumber={m.moveNumber}
+                    data-fen={m.blackMove.resultingFen}
                   >
-                    {m.BlackMove.Move.length > 3
-                      ? `${m.BlackMove.Move[0]}…${last(m.BlackMove.Move)}`
-                      : m.BlackMove.DisplayString}
+                    {m.blackMove.move.length > 3
+                      ? `${m.blackMove.move[0]}…${last(m.blackMove.move)}`
+                      : m.blackMove.displayString}
                   </span>
                 </label>
               </div>
             ) : (
               <div className="col-5" />
             )}
-            {m.WhiteMove?.DisplayString ? (
+            {m.whiteMove?.displayString ? (
               <div className="col-5">
                 <label
                   className="text-start"
-                  title={m.WhiteMove.DisplayString}
+                  title={m.whiteMove.displayString}
                   onContextMenu={(ev) =>
                     handleOnRightClick(
                       ev,
-                      m.MoveNumber,
-                      m.WhiteMove!.ResultingFen,
+                      m.moveNumber,
+                      m.whiteMove!.resultingFen,
                     )
                   }
                 >
                   <input
                     className="d-none"
-                    value={m.WhiteMove.ResultingFen}
+                    value={m.whiteMove.resultingFen}
                     type="radio"
                     role="button"
                     name="move"
                     onClick={(_) => {
                       setState({
-                        moveNumber: m.MoveNumber,
-                        fen: m.WhiteMove!.ResultingFen,
+                        moveNumber: m.moveNumber,
+                        fen: m.whiteMove!.resultingFen,
                       })
-                      viewBoardAtTurn(m.MoveNumber, m.WhiteMove!.ResultingFen)
+                      viewBoardAtTurn(m.moveNumber, m.whiteMove!.resultingFen)
                     }}
                     onChange={(_) => {}}
                     checked={
-                      (!state && m.MoveNumber === i + 1) ||
-                      (state?.moveNumber === m.MoveNumber &&
-                        m.WhiteMove.ResultingFen === state.fen)
+                      (!state && m.moveNumber === i + 1) ||
+                      (state?.moveNumber === m.moveNumber &&
+                        m.whiteMove.resultingFen === state.fen)
                     }
                   />
                   <span
                     className="d-inline-block px-1"
-                    data-movenumber={m.MoveNumber}
-                    data-fen={m.WhiteMove.ResultingFen}
+                    data-movenumber={m.moveNumber}
+                    data-fen={m.whiteMove.resultingFen}
                   >
-                    {m.WhiteMove.Move.length > 3
-                      ? `${m.WhiteMove.Move[0]}…${last(m.WhiteMove.Move)}`
-                      : m.WhiteMove.DisplayString}
+                    {m.whiteMove.move.length > 3
+                      ? `${m.whiteMove.move[0]}…${last(m.whiteMove.move)}`
+                      : m.whiteMove.displayString}
                   </span>
                 </label>
               </div>

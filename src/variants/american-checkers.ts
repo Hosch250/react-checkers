@@ -31,39 +31,39 @@ export const pdnBoard = [
 ]
 
 export const pdnBoardCoords = [
-  { Row: -1, Column: -1 }, // adjust for FEN's 1-based indexing
-  { Row: 0, Column: 1 },
-  { Row: 0, Column: 3 },
-  { Row: 0, Column: 5 },
-  { Row: 0, Column: 7 },
-  { Row: 1, Column: 0 },
-  { Row: 1, Column: 2 },
-  { Row: 1, Column: 4 },
-  { Row: 1, Column: 6 },
-  { Row: 2, Column: 1 },
-  { Row: 2, Column: 3 },
-  { Row: 2, Column: 5 },
-  { Row: 2, Column: 7 },
-  { Row: 3, Column: 0 },
-  { Row: 3, Column: 2 },
-  { Row: 3, Column: 4 },
-  { Row: 3, Column: 6 },
-  { Row: 4, Column: 1 },
-  { Row: 4, Column: 3 },
-  { Row: 4, Column: 5 },
-  { Row: 4, Column: 7 },
-  { Row: 5, Column: 0 },
-  { Row: 5, Column: 2 },
-  { Row: 5, Column: 4 },
-  { Row: 5, Column: 6 },
-  { Row: 6, Column: 1 },
-  { Row: 6, Column: 3 },
-  { Row: 6, Column: 5 },
-  { Row: 6, Column: 7 },
-  { Row: 7, Column: 0 },
-  { Row: 7, Column: 2 },
-  { Row: 7, Column: 4 },
-  { Row: 7, Column: 6 },
+  { row: -1, column: -1 }, // adjust for FEN's 1-based indexing
+  { row: 0, column: 1 },
+  { row: 0, column: 3 },
+  { row: 0, column: 5 },
+  { row: 0, column: 7 },
+  { row: 1, column: 0 },
+  { row: 1, column: 2 },
+  { row: 1, column: 4 },
+  { row: 1, column: 6 },
+  { row: 2, column: 1 },
+  { row: 2, column: 3 },
+  { row: 2, column: 5 },
+  { row: 2, column: 7 },
+  { row: 3, column: 0 },
+  { row: 3, column: 2 },
+  { row: 3, column: 4 },
+  { row: 3, column: 6 },
+  { row: 4, column: 1 },
+  { row: 4, column: 3 },
+  { row: 4, column: 5 },
+  { row: 4, column: 7 },
+  { row: 5, column: 0 },
+  { row: 5, column: 2 },
+  { row: 5, column: 4 },
+  { row: 5, column: 6 },
+  { row: 6, column: 1 },
+  { row: 6, column: 3 },
+  { row: 6, column: 5 },
+  { row: 6, column: 7 },
+  { row: 7, column: 0 },
+  { row: 7, column: 2 },
+  { row: 7, column: 4 },
+  { row: 7, column: 6 },
 ]
 
 function kingRowIndex(player: Player | undefined) {
@@ -80,22 +80,22 @@ function kingRowIndex(player: Player | undefined) {
 function coordExists(coord: Coord) {
   return (
     !!coord &&
-    coord.Row >= 0 &&
-    coord.Row <= Rows &&
-    coord.Column >= 0 &&
-    coord.Column <= Columns
+    coord.row >= 0 &&
+    coord.row <= Rows &&
+    coord.column >= 0 &&
+    coord.column <= Columns
   )
 }
 
 function getJumpedCoord(startCoord: Coord, endCoord: Coord) {
   return {
-    Row: startCoord.Row - Math.sign(startCoord.Row - endCoord.Row),
-    Column: startCoord.Column - Math.sign(startCoord.Column - endCoord.Column),
+    row: startCoord.row - Math.sign(startCoord.row - endCoord.row),
+    column: startCoord.column - Math.sign(startCoord.column - endCoord.column),
   }
 }
 
 export function isJump(move: Move, originalBoard: Board) {
-  return Math.abs(move[0].Row - move[1].Row) === 2
+  return Math.abs(move[0].row - move[1].row) === 2
 }
 
 function checkMoveDirection(
@@ -103,11 +103,11 @@ function checkMoveDirection(
   startCoord: Coord,
   endCoord: Coord,
 ) {
-  switch (piece?.PieceType) {
+  switch (piece?.pieceType) {
     case PieceType.Checker:
       return (
-        (piece.Player === Player.Black && startCoord.Row < endCoord.Row) ||
-        (piece.Player === Player.White && startCoord.Row > endCoord.Row)
+        (piece.player === Player.Black && startCoord.row < endCoord.row) ||
+        (piece.player === Player.White && startCoord.row > endCoord.row)
       )
     case PieceType.King:
       return true
@@ -138,7 +138,7 @@ function isValidCheckerJump(startCoord: Coord, endCoord: Coord, board: Board) {
     checkMoveDirection(piece, startCoord, endCoord) &&
     !square(endCoord, board) &&
     !!jumpedPiece &&
-    jumpedPiece.Player !== piece?.Player
+    jumpedPiece.player !== piece?.player
   )
 }
 
@@ -151,12 +151,12 @@ function isValidKingJump(startCoord: Coord, endCoord: Coord, board: Board) {
   return (
     !square(endCoord, board) &&
     !!jumpedPiece &&
-    jumpedPiece.Player !== piece?.Player
+    jumpedPiece.player !== piece?.player
   )
 }
 
 function isValidHop(startCoord: Coord, endCoord: Coord, board: Board) {
-  switch (square(startCoord, board)?.PieceType) {
+  switch (square(startCoord, board)?.pieceType) {
     case PieceType.Checker:
       return isValidCheckerHop(startCoord, endCoord, board)
     case PieceType.King:
@@ -167,7 +167,7 @@ function isValidHop(startCoord: Coord, endCoord: Coord, board: Board) {
 }
 
 function isValidJump(startCoord: Coord, endCoord: Coord, board: Board) {
-  switch (square(startCoord, board)?.PieceType) {
+  switch (square(startCoord, board)?.pieceType) {
     case PieceType.Checker:
       return isValidCheckerJump(startCoord, endCoord, board)
     case PieceType.King:
@@ -179,10 +179,10 @@ function isValidJump(startCoord: Coord, endCoord: Coord, board: Board) {
 
 function hasValidHop(startCoord: Coord, board: Board) {
   let hopCoords = [
-    offset(startCoord, { Row: -1, Column: 1 }),
-    offset(startCoord, { Row: -1, Column: -1 }),
-    offset(startCoord, { Row: 1, Column: 1 }),
-    offset(startCoord, { Row: 1, Column: -1 }),
+    offset(startCoord, { row: -1, column: 1 }),
+    offset(startCoord, { row: -1, column: -1 }),
+    offset(startCoord, { row: 1, column: 1 }),
+    offset(startCoord, { row: 1, column: -1 }),
   ]
 
   function anyHopIsValid(hops: Move): boolean {
@@ -202,10 +202,10 @@ function hasValidHop(startCoord: Coord, board: Board) {
 
 function hasValidJump(startCoord: Coord, board: Board) {
   let jumpCoords = [
-    offset(startCoord, { Row: -2, Column: 2 }),
-    offset(startCoord, { Row: -2, Column: -2 }),
-    offset(startCoord, { Row: 2, Column: 2 }),
-    offset(startCoord, { Row: 2, Column: -2 }),
+    offset(startCoord, { row: -2, column: 2 }),
+    offset(startCoord, { row: -2, column: -2 }),
+    offset(startCoord, { row: 2, column: 2 }),
+    offset(startCoord, { row: 2, column: -2 }),
   ]
 
   function anyJumpIsValid(jumps: Move): boolean {
@@ -228,36 +228,36 @@ function jumpAvailable(player: Player, board: Board) {
     let piece = board[row][column]
     return (
       !!piece &&
-      piece.Player === player &&
-      hasValidJump({ Row: row, Column: column }, board)
+      piece.player === player &&
+      hasValidJump({ row: row, column: column }, board)
     )
   }
 
   function loop(coord: Coord | undefined): boolean {
     if (!coord) {
       return false
-    } else if (pieceHasJump(coord.Row, coord.Column)) {
+    } else if (pieceHasJump(coord.row, coord.column)) {
       return true
     } else {
       return loop(nextPoint(coord, Rows, Columns))
     }
   }
 
-  return loop({ Row: 0, Column: 0 })
+  return loop({ row: 0, column: 0 })
 }
 
 function setPieceAt(coord: Coord, piece: Piece | undefined, board: Board) {
   let newBoard: Board = cloneDeep(board) as unknown as Board
-  newBoard[coord.Row][coord.Column] = piece
+  newBoard[coord.row][coord.column] = piece
 
   return newBoard
 }
 
 function jump(startCoord: Coord, endCoord: Coord, board: Board) {
-  let kri = kingRowIndex(square(startCoord, board)?.Player)
+  let kri = kingRowIndex(square(startCoord, board)?.player)
 
   let piece =
-    endCoord.Row === kri
+    endCoord.row === kri
       ? promote(square(startCoord, board)!)
       : square(startCoord, board)
 
@@ -270,10 +270,10 @@ function jump(startCoord: Coord, endCoord: Coord, board: Board) {
 }
 
 function hop(startCoord: Coord, endCoord: Coord, board: Board) {
-  let kri = kingRowIndex(square(startCoord, board)?.Player)
+  let kri = kingRowIndex(square(startCoord, board)?.player)
 
   let piece =
-    endCoord.Row === kri
+    endCoord.row === kri
       ? promote(square(startCoord, board)!)
       : square(startCoord, board)
 
@@ -300,13 +300,13 @@ export function isValidMove(
     return false
   }
 
-  switch (Math.abs(startCoord.Row - endCoord.Row)) {
+  switch (Math.abs(startCoord.row - endCoord.row)) {
     case 1:
       return (
         isValidHop(startCoord, endCoord, board) &&
         !(
           requireJumps &&
-          jumpAvailable(square(startCoord, board)!.Player, board)
+          jumpAvailable(square(startCoord, board)!.player, board)
         )
       )
     case 2:
@@ -323,7 +323,7 @@ export function movePiece(
   board: Board,
 ) {
   if (isValidMove(requireJumps, startCoord, endCoord, board)) {
-    switch (Math.abs(startCoord.Row - endCoord.Row)) {
+    switch (Math.abs(startCoord.row - endCoord.row)) {
       case 1:
         return hop(startCoord, endCoord, board)
       case 2:
@@ -354,11 +354,11 @@ export function moveSequence(
 }
 
 function wasCheckerMoved(moves: PdnMove[]) {
-  return moves.some((item) => item.PieceTypeMoved === PieceType.Checker)
+  return moves.some((item) => item.pieceTypeMoved === PieceType.Checker)
 }
 
 function wasPieceJumped(moves: PdnMove[]) {
-  return moves.some((item) => item.IsJump)
+  return moves.some((item) => item.isJump)
 }
 
 export function isDrawn(initialFen: string, moveHistory: PdnTurn[]) {
@@ -366,24 +366,24 @@ export function isDrawn(initialFen: string, moveHistory: PdnTurn[]) {
     initialFen,
     ...moveHistory.flatMap((f) => {
       if (
-        !!f.BlackMove &&
-        !!f.WhiteMove &&
-        f.BlackMove.Move.length !== 0 &&
-        f.WhiteMove.Move.length !== 0
+        !!f.blackMove &&
+        !!f.whiteMove &&
+        f.blackMove.move.length !== 0 &&
+        f.whiteMove.move.length !== 0
       ) {
-        return [f.BlackMove.ResultingFen, f.WhiteMove.ResultingFen]
+        return [f.blackMove.resultingFen, f.whiteMove.resultingFen]
       } else if (
-        !!f.BlackMove &&
-        f.BlackMove.Move.length !== 0 &&
-        (!f.WhiteMove || f.WhiteMove.Move.length === 0)
+        !!f.blackMove &&
+        f.blackMove.move.length !== 0 &&
+        (!f.whiteMove || f.whiteMove.move.length === 0)
       ) {
-        return [f.BlackMove.ResultingFen]
+        return [f.blackMove.resultingFen]
       } else if (
-        (!f.BlackMove || f.BlackMove.Move.length === 0) &&
-        !!f.WhiteMove &&
-        f.WhiteMove.Move.length === 0
+        (!f.blackMove || f.blackMove.move.length === 0) &&
+        !!f.whiteMove &&
+        f.whiteMove.move.length === 0
       ) {
-        return [f.WhiteMove.ResultingFen]
+        return [f.whiteMove.resultingFen]
       } else {
         return []
       }
@@ -397,18 +397,18 @@ export function isDrawn(initialFen: string, moveHistory: PdnTurn[]) {
     ) >= 3
 
   let whiteMoves = moveHistory
-    .filter((f) => !!f.WhiteMove)
-    .map((m) => m.WhiteMove!)
+    .filter((f) => !!f.whiteMove)
+    .map((m) => m.whiteMove!)
   let blackMoves = moveHistory
-    .filter((f) => !!f.BlackMove)
-    .map((m) => m.BlackMove!)
+    .filter((f) => !!f.blackMove)
+    .map((m) => m.blackMove!)
 
   let lastFortyWhiteMoves = drop(
-    whiteMoves.filter((f) => f.Move.length !== 0),
+    whiteMoves.filter((f) => f.move.length !== 0),
     40,
   )
   let lastFortyBlackMoves = blackMoves
-    .filter((f) => f.Move.length !== 0)
+    .filter((f) => f.move.length !== 0)
     .slice(40)
 
   return (
@@ -427,9 +427,9 @@ function moveAvailable(board: Board, player: Player) {
     let piece = board[row][column]
     return (
       !!piece &&
-      piece.Player === player &&
-      (hasValidJump({ Row: row, Column: column }, board) ||
-        hasValidHop({ Row: row, Column: column }, board))
+      piece.player === player &&
+      (hasValidJump({ row: row, column: column }, board) ||
+        hasValidHop({ row: row, column: column }, board))
     )
   }
 
@@ -438,12 +438,12 @@ function moveAvailable(board: Board, player: Player) {
       return false
     }
 
-    return pieceHasMove(coord.Row, coord.Column)
+    return pieceHasMove(coord.row, coord.column)
       ? true
       : loop(nextPoint(coord, Rows, Columns))
   }
 
-  return loop({ Row: 0, Column: 0 })
+  return loop({ row: 0, column: 0 })
 }
 
 export function winningPlayer(board: Board, currentPlayer: Player | undefined) {
@@ -466,11 +466,11 @@ export function playerTurnEnds(
   originalBoard: Board,
   currentBoard: Board,
 ) {
-  let lastMoveWasJump = Math.abs(move[0].Row - move[1].Row) === 2
+  let lastMoveWasJump = Math.abs(move[0].row - move[1].row) === 2
 
   let pieceWasPromoted =
-    square(last(move)!, currentBoard)!.PieceType === PieceType.King &&
-    square(move[0], originalBoard)!.PieceType === PieceType.Checker
+    square(last(move)!, currentBoard)!.pieceType === PieceType.King &&
+    square(move[0], originalBoard)!.pieceType === PieceType.Checker
 
   return (
     pieceWasPromoted ||

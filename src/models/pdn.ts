@@ -60,7 +60,7 @@ function addPieces(
       piece = blackChecker
       break
   }
-  board[boardCoord.Row][boardCoord.Column] = piece
+  board[boardCoord.row][boardCoord.column] = piece
 
   if (fenTail.length !== 0) {
     addPieces(fenTail, player, board, pdnBoardCoords)
@@ -87,12 +87,12 @@ export function controllerFromFen(variant: GameVariant, fen: string) {
   }
 
   return {
-    Variant: variant,
-    Board: board,
-    CurrentPlayer: playerTurn,
-    InitialPosition: fen,
-    MoveHistory: [],
-    CurrentCoord: undefined,
+    variant: variant,
+    board: board,
+    currentPlayer: playerTurn,
+    initialPosition: fen,
+    moveHistory: [],
+    currentCoord: undefined,
   }
 }
 
@@ -104,7 +104,7 @@ export function createFen(variant: PdnMembers, player: Player, board: Board) {
     if (next) {
       let piece = square(coord, board)
       if (!!piece && isPlayerPiece(player, coord, board)) {
-        let isKing = piece.PieceType === PieceType.King
+        let isKing = piece.pieceType === PieceType.King
 
         let pdnBoard = variant.pdnBoard
 
@@ -122,8 +122,8 @@ export function createFen(variant: PdnMembers, player: Player, board: Board) {
     }
   }
 
-  let whitePieceFEN = loop([], Player.White, { Row: 0, Column: 0 }).join(',')
-  let blackPieceFEN = loop([], Player.Black, { Row: 0, Column: 0 }).join(',')
+  let whitePieceFEN = loop([], Player.White, { row: 0, column: 0 }).join(',')
+  let blackPieceFEN = loop([], Player.Black, { row: 0, column: 0 }).join(',')
 
   return (
     '[FEN "' +

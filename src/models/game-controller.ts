@@ -14,35 +14,35 @@ import {
 } from './types'
 
 export type GameController = {
-  Variant: GameVariant
-  Board: Board
-  CurrentPlayer: Player
-  InitialPosition: string
-  MoveHistory: PdnTurn[]
-  CurrentCoord: Coord | undefined
+  variant: GameVariant
+  board: Board
+  currentPlayer: Player
+  initialPosition: string
+  moveHistory: PdnTurn[]
+  currentCoord: Coord | undefined
 }
 
 export const newAmericanCheckersGame: GameController = {
-  Variant: GameVariantAmericanCheckers,
-  Board: defaultBoard,
-  CurrentPlayer: Player.Black,
-  InitialPosition: defaultFen,
-  MoveHistory: [],
-  CurrentCoord: undefined,
+  variant: GameVariantAmericanCheckers,
+  board: defaultBoard,
+  currentPlayer: Player.Black,
+  initialPosition: defaultFen,
+  moveHistory: [],
+  currentCoord: undefined,
 }
 export const newAmericanCheckersOptionalJumpGame: GameController = {
-  Variant: GameVariantAmericanCheckersOptionalJump,
-  Board: defaultBoard,
-  CurrentPlayer: Player.Black,
-  InitialPosition: defaultFen,
-  MoveHistory: [],
-  CurrentCoord: undefined,
+  variant: GameVariantAmericanCheckersOptionalJump,
+  board: defaultBoard,
+  currentPlayer: Player.Black,
+  initialPosition: defaultFen,
+  moveHistory: [],
+  currentCoord: undefined,
 }
 export const newPoolCheckersGame: GameController = {
-  Variant: GameVariantPoolCheckers,
-  Board: defaultBoard,
-  CurrentPlayer: Player.Black,
-  InitialPosition: defaultFen,
-  MoveHistory: [],
-  CurrentCoord: undefined,
+  variant: GameVariantPoolCheckers,
+  board: defaultBoard,
+  currentPlayer: Player.Black,
+  initialPosition: defaultFen,
+  moveHistory: [],
+  currentCoord: undefined,
 }

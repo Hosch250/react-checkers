@@ -22,7 +22,7 @@ export function getSquare(
       key={`col_${row}${col}`}
       color={getSquareColor(row, col)}
       piece={piece}
-      coord={{ Row: row, Column: col }}
+      coord={{ row: row, column: col }}
       isSelected={isSelected}
       onclick={onclick}
     />
@@ -45,7 +45,7 @@ function Board({
           return getSquare(
             rowIndex,
             col,
-            selectedCoord?.Row === rowIndex && selectedCoord.Column === col,
+            selectedCoord?.row === rowIndex && selectedCoord.column === col,
             piece,
             onclick,
           )

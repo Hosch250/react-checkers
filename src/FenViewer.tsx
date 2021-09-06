@@ -10,10 +10,10 @@ function FenViewer() {
   let pdnMembers: PdnMembers
   switch (value.variant) {
     case Variant.AmericanCheckers:
-      pdnMembers = newAmericanCheckersGame.Variant.pdnMembers
+      pdnMembers = newAmericanCheckersGame.variant.pdnMembers
       break
     case Variant.PoolCheckers:
-      pdnMembers = newPoolCheckersGame.Variant.pdnMembers
+      pdnMembers = newPoolCheckersGame.variant.pdnMembers
       break
   }
   const fen = createFen(pdnMembers!, value.player, value.board)

@@ -9,9 +9,9 @@ import { useState } from 'react'
 function GameInfo() {
   const { value } = useGameController()
 
-  let winningPlayer = value.Variant.apiMembers.winningPlayer(
-    value.Board,
-    value.CurrentPlayer,
+  let winningPlayer = value.variant.apiMembers.winningPlayer(
+    value.board,
+    value.currentPlayer,
   )
 
   let winStatus = '*'
@@ -20,13 +20,13 @@ function GameInfo() {
   } else if (winningPlayer === Player.White) {
     winStatus = '1-0'
   } else if (
-    value.Variant.apiMembers.isDrawn(value.InitialPosition, value.MoveHistory)
+    value.variant.apiMembers.isDrawn(value.initialPosition, value.moveHistory)
   ) {
     winStatus = '½-½'
   }
 
   let variantName
-  switch (value.Variant.variant) {
+  switch (value.variant.variant) {
     case Variant.AmericanCheckers:
       variantName = 'American Checkers'
       break
@@ -45,7 +45,7 @@ function GameInfo() {
       <div className="fw-bold px-2">{variantName}</div>
       <div
         className={`px-2 ${
-          value.CurrentPlayer === Player.White ? 'fw-bold' : ''
+          value.currentPlayer === Player.White ? 'fw-bold' : ''
         }`}
       >
         <img
@@ -57,7 +57,7 @@ function GameInfo() {
       </div>
       <div
         className={`px-2 ${
-          value.CurrentPlayer === Player.Black ? 'fw-bold' : ''
+          value.currentPlayer === Player.Black ? 'fw-bold' : ''
         }`}
       >
         <img

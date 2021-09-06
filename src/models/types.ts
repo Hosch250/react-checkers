@@ -19,44 +19,44 @@ export enum Variant {
   AmericanCheckersOptionalJump,
 }
 
-export type Coord = { Row: number; Column: number }
+export type Coord = { row: number; column: number }
 
 export type Move = Coord[]
 
 export type Board = (Piece | undefined)[][]
 
-export type Piece = { Player: Player; PieceType: PieceType }
+export type Piece = { player: Player; pieceType: PieceType }
 
 export type PdnMove = {
-  Move: number[]
-  ResultingFen: string
-  DisplayString: string
-  PieceTypeMoved: PieceType | undefined
-  Player: Player | undefined
-  IsJump: boolean | undefined
+  move: number[]
+  resultingFen: string
+  displayString: string
+  pieceTypeMoved: PieceType | undefined
+  player: Player | undefined
+  isJump: boolean | undefined
 }
 
 export type PdnTurn = {
-  MoveNumber: number
-  BlackMove: PdnMove | undefined
-  WhiteMove: PdnMove | undefined
+  moveNumber: number
+  blackMove: PdnMove | undefined
+  whiteMove: PdnMove | undefined
 }
 
 export const whiteChecker: Piece = {
-  Player: Player.White,
-  PieceType: PieceType.Checker,
+  player: Player.White,
+  pieceType: PieceType.Checker,
 }
 export const whiteKing: Piece = {
-  Player: Player.White,
-  PieceType: PieceType.King,
+  player: Player.White,
+  pieceType: PieceType.King,
 }
 export const blackChecker: Piece = {
-  Player: Player.Black,
-  PieceType: PieceType.Checker,
+  player: Player.Black,
+  pieceType: PieceType.Checker,
 }
 export const blackKing: Piece = {
-  Player: Player.Black,
-  PieceType: PieceType.King,
+  player: Player.Black,
+  pieceType: PieceType.King,
 }
 
 export const defaultBoard: (Piece | undefined)[][] = [
@@ -229,44 +229,44 @@ export const defaultFen =
   '[FEN "B:W21,22,23,24,25,26,27,28,29,30,31,32:B1,2,3,4,5,6,7,8,9,10,11,12"]'
 
 export function offset(c1: Coord, c2: Coord) {
-  return { Row: c1.Row + c2.Row, Column: c1.Column + c2.Column }
+  return { row: c1.row + c2.row, column: c1.column + c2.column }
 }
 
 export function square<a>(coord: Coord, board: a[][]) {
-  return board[coord.Row][coord.Column]
+  return board[coord.row][coord.column]
 }
 
 export function promote(piece: Piece) {
-  return { Player: piece.Player, PieceType: PieceType.King }
+  return { player: piece.player, pieceType: PieceType.King }
 }
 
 export function moveIsDiagonal(startCoord: Coord, endCoord: Coord) {
   return (
     startCoord !== endCoord &&
-    Math.abs(startCoord.Row - endCoord.Row) ===
-      Math.abs(startCoord.Column - endCoord.Column)
+    Math.abs(startCoord.row - endCoord.row) ===
+      Math.abs(startCoord.column - endCoord.column)
   )
 }
 
 export function isPlayerPiece(player: Player, coord: Coord, board: Board) {
   let piece = square(coord, board)
-  return !!piece && player === piece.Player
+  return !!piece && player === piece.player
 }
 
 export function nextPoint(coord: Coord, rows: number, columns: number) {
-  if (coord.Column === columns) {
-    if (coord.Row === rows) {
+  if (coord.column === columns) {
+    if (coord.row === rows) {
       return undefined
     } else {
       return {
-        Row: coord.Row + 1,
-        Column: 0,
+        row: coord.row + 1,
+        column: 0,
       }
     }
   } else {
     return {
       ...coord,
-      Column: coord.Column + 1,
+      column: coord.column + 1,
     }
   }
 }
