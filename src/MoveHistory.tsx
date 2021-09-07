@@ -23,7 +23,7 @@ function getViewBoardAtTurn(
   setState: (value: undefined) => void,
 ) {
   let viewBoardAtTurn = (moveNumber: number, fen: string) => {
-    let board = controllerFromFen(controller.variant, fen).Board
+    let board = controllerFromFen(controller.variant, fen).board
     updateController({ ...controller, board: board })
 
     if (

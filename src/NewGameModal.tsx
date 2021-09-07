@@ -11,7 +11,7 @@ import {
   newPoolCheckersGame,
 } from './models/game-controller'
 import { controllerFromFen } from './models/pdn'
-import { Variant } from './models/types'
+import { Variant, Color, PlayerType, Player } from './models/types'
 import './NewGameModal.css'
 
 function NewGameModal({
@@ -26,6 +26,8 @@ function NewGameModal({
     variant: Variant.AmericanCheckers,
     position: 'default',
     fen: '',
+    blackPlayer: { color: Color.Black, player: PlayerType.Human, aiLevel: undefined } as Player,
+    whitePlayer: { color: Color.White, player: PlayerType.Human, aiLevel: undefined } as Player,
   })
 
   function createNewGame(ev: React.FormEvent) {
@@ -43,10 +45,13 @@ function NewGameModal({
         controller = cloneDeep(newPoolCheckersGame)
         break
     }
-    
+
     if (form.position === 'fen') {
       controller = controllerFromFen(controller.variant, form.fen)
     }
+
+    controller.blackInfo = form.blackPlayer
+    controller.whiteInfo = form.whitePlayer
 
     onChange(controller)
     setShow(false)
@@ -58,6 +63,8 @@ function NewGameModal({
       variant: Variant.AmericanCheckers,
       position: 'default',
       fen: '',
+      blackPlayer: {color: Color.Black, player: PlayerType.Human},
+      whitePlayer: {color: Color.White, player: PlayerType.Human}
     })
   }
 
@@ -86,6 +93,98 @@ function NewGameModal({
             </select>
             <label htmlFor="variant">Variant</label>
           </div>
+          <fieldset className="border-start ps-3 mt-3">
+            <legend>Black Player</legend>
+            <label className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="blackPlayerType"
+                value={PlayerType.Human}
+                defaultChecked
+                onChange={(_) =>
+                  setForm({ ...form, blackPlayer: {...form.blackPlayer, player: PlayerType.Human }})
+                }
+              />
+              Human
+            </label>
+            <label className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="blackPlayerType"
+                value={PlayerType.Computer}
+                onChange={(_) =>
+                  setForm({ ...form, blackPlayer: {...form.blackPlayer, player: PlayerType.Computer, aiLevel: 5 }})
+                }
+              />
+              Computer
+            </label>
+            <div
+              className={`input-group mt-2 ${
+                form.blackPlayer.player === PlayerType.Human ? 'd-none' : ''
+              }`}
+            >
+              <label htmlFor="blackAiDifficulty" className="form-label">
+                AI Difficulty
+              </label>
+              <input
+                type="range"
+                className="form-range"
+                min="2"
+                max="9"
+                id="blackAiDifficulty"
+                defaultValue={form.blackPlayer.aiLevel}
+                onChange={(_) => setForm({ ...form, blackPlayer: {...form.blackPlayer, aiLevel: parseInt(_.target.value) } })}
+              />
+            </div>
+          </fieldset>
+          <fieldset className="border-start ps-3 mt-3">
+            <legend>White Player</legend>
+            <label className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="whitePlayerType"
+                value={PlayerType.Human}
+                defaultChecked
+                onChange={(_) =>
+                  setForm({ ...form, whitePlayer: {...form.whitePlayer, player: PlayerType.Human }})
+                }
+              />
+              Human
+            </label>
+            <label className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="whitePlayerType"
+                value={PlayerType.Computer}
+                onChange={(_) =>
+                  setForm({ ...form, whitePlayer: {...form.whitePlayer, player: PlayerType.Computer, aiLevel: 5 }})
+                }
+              />
+              Computer
+            </label>
+            <div
+              className={`input-group mt-2 ${
+                form.whitePlayer.player === PlayerType.Human ? 'd-none' : ''
+              }`}
+            >
+              <label htmlFor="whiteAiDifficulty" className="form-label">
+                AI Difficulty
+              </label>
+              <input
+                type="range"
+                className="form-range"
+                min="2"
+                max="9"
+                id="whiteAiDifficulty"
+                defaultValue={form.whitePlayer.aiLevel}
+                onChange={(_) => setForm({ ...form, whitePlayer: {...form.whitePlayer, aiLevel: parseInt(_.target.value) } })}
+              />
+            </div>
+          </fieldset>
           <fieldset className="border-start ps-3 mt-3">
             <legend>Position</legend>
             <label className="form-check form-check-inline">

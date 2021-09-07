@@ -9,7 +9,7 @@ import {
   PdnTurn,
   Piece,
   PieceType,
-  Player,
+  Color,
   promote,
   square,
 } from '../models/types'
@@ -17,7 +17,7 @@ import { cloneDeep, countBy, drop, keys, last, tail } from 'lodash'
 
 const Rows = 7
 const Columns = 7
-export const StartingPlayer = Player.Black
+export const StartingPlayer = Color.Black
 
 export const pdnBoard = [
   [undefined, 1, undefined, 2, undefined, 3, undefined, 4],
@@ -66,11 +66,11 @@ export const pdnBoardCoords = [
   { row: 7, column: 6 },
 ]
 
-function kingRowIndex(player: Player | undefined) {
+function kingRowIndex(player: Color | undefined) {
   switch (player) {
-    case Player.Black:
+    case Color.Black:
       return Rows
-    case Player.White:
+    case Color.White:
       return 0
     default:
       return undefined
@@ -106,8 +106,8 @@ function checkMoveDirection(
   switch (piece?.pieceType) {
     case PieceType.Checker:
       return (
-        (piece.player === Player.Black && startCoord.row < endCoord.row) ||
-        (piece.player === Player.White && startCoord.row > endCoord.row)
+        (piece.player === Color.Black && startCoord.row < endCoord.row) ||
+        (piece.player === Color.White && startCoord.row > endCoord.row)
       )
     case PieceType.King:
       return true
@@ -223,7 +223,7 @@ function hasValidJump(startCoord: Coord, board: Board) {
   return anyJumpIsValid(jumpCoords)
 }
 
-function jumpAvailable(player: Player, board: Board) {
+function jumpAvailable(player: Color, board: Board) {
   function pieceHasJump(row: number, column: number): boolean {
     let piece = board[row][column]
     return (
@@ -422,7 +422,7 @@ export function isDrawn(initialFen: string, moveHistory: PdnTurn[]) {
   )
 }
 
-function moveAvailable(board: Board, player: Player) {
+function moveAvailable(board: Board, player: Color) {
   function pieceHasMove(row: number, column: number): boolean {
     let piece = board[row][column]
     return (
@@ -446,16 +446,16 @@ function moveAvailable(board: Board, player: Player) {
   return loop({ row: 0, column: 0 })
 }
 
-export function winningPlayer(board: Board, currentPlayer: Player | undefined) {
-  const blackHasMove = moveAvailable(board, Player.Black)
-  const whiteHasMove = moveAvailable(board, Player.White)
+export function winningPlayer(board: Board, currentPlayer: Color | undefined) {
+  const blackHasMove = moveAvailable(board, Color.Black)
+  const whiteHasMove = moveAvailable(board, Color.White)
 
   if (!blackHasMove && !whiteHasMove) {
     return currentPlayer
   } else if (!whiteHasMove) {
-    return Player.Black
+    return Color.Black
   } else if (!blackHasMove) {
-    return Player.White
+    return Color.White
   } else {
     return undefined
   }

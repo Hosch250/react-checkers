@@ -6,7 +6,7 @@ import {
   newAmericanCheckersGame,
   newPoolCheckersGame,
 } from './models/game-controller'
-import { emptyBoardList, Player, Variant } from './models/types'
+import { emptyBoardList, Color, Variant } from './models/types'
 
 function EditorOptions() {
   const { value, onChange } = useBoardEditor()
@@ -54,11 +54,11 @@ function EditorOptions() {
           className="form-select"
           id="turn"
           onChange={(_) =>
-            onChange({ ...value, player: parseInt(_.target.value) })
+            onChange({ ...value, player: parseInt(_.target.value) as Color })
           }
         >
-          <option value={Player.Black}>Black</option>
-          <option value={Player.White}>White</option>
+          <option value={Color.Black}>Black</option>
+          <option value={Color.White}>White</option>
         </select>
         <label htmlFor="turn">First Move</label>
       </div>

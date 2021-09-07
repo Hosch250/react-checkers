@@ -1,11 +1,6 @@
 export enum Color {
-  White = 'white',
-  Black = 'black',
-}
-
-export enum Player {
-  Black,
   White,
+  Black,
 }
 
 export enum PieceType {
@@ -19,20 +14,27 @@ export enum Variant {
   AmericanCheckersOptionalJump,
 }
 
+export enum PlayerType {
+  Human,
+  Computer,
+}
+
 export type Coord = { row: number; column: number }
 
 export type Move = Coord[]
 
 export type Board = (Piece | undefined)[][]
 
-export type Piece = { player: Player; pieceType: PieceType }
+export type Piece = { player: Color; pieceType: PieceType }
+
+export type Player = { color: Color, player: PlayerType, aiLevel?: number }
 
 export type PdnMove = {
   move: number[]
   resultingFen: string
   displayString: string
   pieceTypeMoved: PieceType | undefined
-  player: Player | undefined
+  player: Color | undefined
   isJump: boolean | undefined
 }
 
@@ -43,19 +45,19 @@ export type PdnTurn = {
 }
 
 export const whiteChecker: Piece = {
-  player: Player.White,
+  player: Color.White,
   pieceType: PieceType.Checker,
 }
 export const whiteKing: Piece = {
-  player: Player.White,
+  player: Color.White,
   pieceType: PieceType.King,
 }
 export const blackChecker: Piece = {
-  player: Player.Black,
+  player: Color.Black,
   pieceType: PieceType.Checker,
 }
 export const blackKing: Piece = {
-  player: Player.Black,
+  player: Color.Black,
   pieceType: PieceType.King,
 }
 
@@ -248,7 +250,7 @@ export function moveIsDiagonal(startCoord: Coord, endCoord: Coord) {
   )
 }
 
-export function isPlayerPiece(player: Player, coord: Coord, board: Board) {
+export function isPlayerPiece(player: Color, coord: Coord, board: Board) {
   let piece = square(coord, board)
   return !!piece && player === piece.player
 }

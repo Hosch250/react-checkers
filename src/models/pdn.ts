@@ -9,10 +9,11 @@ import {
   isPlayerPiece,
   nextPoint,
   PieceType,
-  Player,
+  Color,
   square,
   whiteChecker,
   whiteKing,
+  PlayerType,
 } from './types'
 
 const BlackSymbol = 'B'
@@ -34,7 +35,7 @@ function getPieceNotation(fenSections: string[], playerSymbol: string) {
 
 function addPieces(
   fenPieces: string[],
-  player: Player,
+  player: Color,
   board: Board,
   pdnBoardCoords: Coord[],
 ) {
@@ -47,16 +48,16 @@ function addPieces(
 
   let piece = undefined
   switch (true) {
-    case player === Player.White && isKing:
+    case player === Color.White && isKing:
       piece = whiteKing
       break
-    case player === Player.White && !isKing:
+    case player === Color.White && !isKing:
       piece = whiteChecker
       break
-    case player === Player.Black && isKing:
+    case player === Color.Black && isKing:
       piece = blackKing
       break
-    case player === Player.Black && !isKing:
+    case player === Color.Black && !isKing:
       piece = blackChecker
       break
   }
@@ -71,7 +72,7 @@ export function controllerFromFen(variant: GameVariant, fen: string) {
   let fenValue = fen.split('"')[1]
   let fenSubsections = fenValue.split(':')
   let playerTurn =
-    fenSubsections[0][0] === BlackSymbol ? Player.Black : Player.White
+    fenSubsections[0][0] === BlackSymbol ? Color.Black : Color.White
 
   let whitePieces = getPieceNotation(fenSubsections, WhiteSymbol)
   let blackPieces = getPieceNotation(fenSubsections, BlackSymbol)
@@ -80,10 +81,10 @@ export function controllerFromFen(variant: GameVariant, fen: string) {
 
   let board = emptyBoardList()
   if (whitePieces.length > 0) {
-    addPieces(whitePieces, Player.White, board, pdnBoardCoords)
+    addPieces(whitePieces, Color.White, board, pdnBoardCoords)
   }
   if (blackPieces.length > 0) {
-    addPieces(blackPieces, Player.Black, board, pdnBoardCoords)
+    addPieces(blackPieces, Color.Black, board, pdnBoardCoords)
   }
 
   return {
@@ -93,13 +94,15 @@ export function controllerFromFen(variant: GameVariant, fen: string) {
     initialPosition: fen,
     moveHistory: [],
     currentCoord: undefined,
+    blackInfo: {color: Color.Black, player: PlayerType.Human},
+    whiteInfo: {color: Color.White, player: PlayerType.Human}
   }
 }
 
-export function createFen(variant: PdnMembers, player: Player, board: Board) {
-  let turnSymbol = player === Player.White ? WhiteSymbol : BlackSymbol
+export function createFen(variant: PdnMembers, player: Color, board: Board) {
+  let turnSymbol = player === Color.White ? WhiteSymbol : BlackSymbol
 
-  let loop = (fenNumbers: string[], player: Player, coord: Coord): string[] => {
+  let loop = (fenNumbers: string[], player: Color, coord: Coord): string[] => {
     let next = nextPoint(coord, 7, 7)
     if (next) {
       let piece = square(coord, board)
@@ -122,8 +125,8 @@ export function createFen(variant: PdnMembers, player: Player, board: Board) {
     }
   }
 
-  let whitePieceFEN = loop([], Player.White, { row: 0, column: 0 }).join(',')
-  let blackPieceFEN = loop([], Player.Black, { row: 0, column: 0 }).join(',')
+  let whitePieceFEN = loop([], Color.White, { row: 0, column: 0 }).join(',')
+  let blackPieceFEN = loop([], Color.Black, { row: 0, column: 0 }).join(',')
 
   return (
     '[FEN "' +

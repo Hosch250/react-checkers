@@ -1,4 +1,4 @@
-import { Coord, Board, Player, Move, Variant, PdnTurn } from './types'
+import { Coord, Board, Color, Move, Variant, PdnTurn } from './types'
 import * as AmericanCheckersVariant from '../variants/american-checkers'
 import * as PoolCheckersVariant from '../variants/pool-checkers'
 import { curry } from 'lodash'
@@ -57,11 +57,11 @@ export type ApiMembers = {
   ) => Board | undefined
   moveSequence: (moves: Coord[], board: Board | undefined) => Board | undefined
   isJump: (move: Move, board: Board) => boolean
-  startingPlayer: Player
+  startingPlayer: Color
   winningPlayer: (
     board: Board,
-    player: Player | undefined,
-  ) => Player | undefined
+    player: Color | undefined,
+  ) => Color | undefined
   isDrawn: (fen: string, pdnTurn: PdnTurn[]) => boolean
   playerTurnEnds: (
     move: Move,

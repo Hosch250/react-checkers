@@ -2,12 +2,12 @@ import { cloneDeep } from 'lodash'
 import React, { Dispatch, SetStateAction } from 'react'
 import { newAmericanCheckersGame } from './models/game-controller'
 import { PdnMembers } from './models/game-variant'
-import { Board, Player, Variant } from './models/types'
+import { Board, Color, Variant } from './models/types'
 
 export type BoardEditorInfo = {
   board: Board,
   variant: Variant,
-  player: Player,
+  player: Color,
   pdnMembers: PdnMembers
 }
 

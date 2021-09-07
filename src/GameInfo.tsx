@@ -1,5 +1,5 @@
 import { useGameController } from './GameControllerContext'
-import { Player, Variant } from './models/types'
+import { Color, PlayerType, Variant } from './models/types'
 import wpi from './Assets/WhitePlayerIcon.svg'
 import bpi from './Assets/BlackPlayerIcon.svg'
 import Button from 'react-bootstrap/esm/Button'
@@ -15,9 +15,9 @@ function GameInfo() {
   )
 
   let winStatus = '*'
-  if (winningPlayer === Player.Black) {
+  if (winningPlayer === Color.Black) {
     winStatus = '0-1'
-  } else if (winningPlayer === Player.White) {
+  } else if (winningPlayer === Color.White) {
     winStatus = '1-0'
   } else if (
     value.variant.apiMembers.isDrawn(value.initialPosition, value.moveHistory)
@@ -37,6 +37,9 @@ function GameInfo() {
       variantName = 'American Checkers Optional Jump'
       break
   }
+
+  let blackPlayerLabel = value.blackInfo.player === PlayerType.Human ? 'Human' : `Computer Level ${value.blackInfo.aiLevel}`
+  let whitePlayerLabel = value.whiteInfo.player === PlayerType.Human ? 'Human' : `Computer Level ${value.whiteInfo.aiLevel}`
   
   const showState = useState(false)
 
@@ -45,7 +48,7 @@ function GameInfo() {
       <div className="fw-bold px-2">{variantName}</div>
       <div
         className={`px-2 ${
-          value.currentPlayer === Player.White ? 'fw-bold' : ''
+          value.currentPlayer === Color.White ? 'fw-bold' : ''
         }`}
       >
         <img
@@ -53,11 +56,11 @@ function GameInfo() {
           style={{ verticalAlign: 'middle', height: 15 }}
           alt="white"
         />{' '}
-        Human
+        {whitePlayerLabel}
       </div>
       <div
         className={`px-2 ${
-          value.currentPlayer === Player.Black ? 'fw-bold' : ''
+          value.currentPlayer === Color.Black ? 'fw-bold' : ''
         }`}
       >
         <img
@@ -65,7 +68,7 @@ function GameInfo() {
           style={{ verticalAlign: 'middle', height: 15 }}
           alt="black"
         />{' '}
-        Human
+        {blackPlayerLabel}
       </div>
       <div className="text-center">{winStatus}</div>
       <Button

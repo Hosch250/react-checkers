@@ -1,6 +1,6 @@
 import { last } from 'lodash'
 import { useGameController } from './GameControllerContext'
-import { Player } from './models/types'
+import { Color } from './models/types'
 
 function DisplayWin() {
   const { value } = useGameController()
@@ -10,7 +10,7 @@ function DisplayWin() {
     value.currentPlayer,
   )
   if (winningPlayer !== undefined) {
-    let playerName = winningPlayer === Player.Black ? 'Black' : 'White'
+    let playerName = winningPlayer === Color.Black ? 'Black' : 'White'
     return <div className="DisplayWin">{playerName} has won</div>
   }
 

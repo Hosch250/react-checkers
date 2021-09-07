@@ -11,14 +11,19 @@ function Square({
 }: {
   color: Color
   piece?: PieceModel
-  coord: Coord,
-  isSelected: boolean,
+  coord: Coord
+  isSelected: boolean
   onclick: (row: number, col: number) => void
 }) {
-
   let domPiece = piece ? <Piece piece={piece} /> : null
+  let backgroundColor = color === Color.Black ? 'black' : 'white'
   return (
-    <div style={{backgroundColor: color}} className={`Square ${isSelected ? 'selected' : ''}`} role="button" onClick={() => onclick(coord.row, coord.column)}>
+    <div
+      style={{ backgroundColor }}
+      className={`Square ${isSelected ? 'selected' : ''}`}
+      role="button"
+      onClick={() => onclick(coord.row, coord.column)}
+    >
       {domPiece}
     </div>
   )

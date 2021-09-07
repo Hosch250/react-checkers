@@ -17,14 +17,14 @@ import {
   PdnTurn,
   Piece,
   PieceType,
-  Player,
+  Color,
   promote,
   square,
 } from '../models/types'
 
 const Rows = 7
 const Columns = 7
-export const StartingPlayer = Player.Black
+export const StartingPlayer = Color.Black
 
 export const pdnBoard = [
   [undefined, 1, undefined, 2, undefined, 3, undefined, 4],
@@ -80,8 +80,8 @@ function getJumpedCoord(startCoord: Coord, endCoord: Coord) {
   }
 }
 
-function kingRowIndex(player: Player) {
-  return player === Player.Black ? Rows : 0
+function kingRowIndex(player: Color) {
+  return player === Color.Black ? Rows : 0
 }
 
 function coordExists(coord: Coord) {
@@ -114,7 +114,7 @@ export function isJump(move: Move, originalBoard: Board) {
 }
 
 export function getJumpTarget(
-  currentPlayer: Player,
+  currentPlayer: Color,
   currentCoord: Coord,
   rowSign: number,
   colSign: number,
@@ -145,7 +145,7 @@ export function getJumpTarget(
 }
 
 export function getHopTargets(
-  currentPlayer: Player,
+  currentPlayer: Color,
   currentCoord: Coord,
   rowSign: number,
   colSign: number,
@@ -153,7 +153,7 @@ export function getHopTargets(
 ) {
   function getTargets(
     targets: Coord[],
-    currentPlayer: Player,
+    currentPlayer: Color,
     currentCoord: Coord,
     rowSign: number,
     colSign: number,
@@ -187,7 +187,7 @@ function checkMoveDirection(
   let moveIsJump = isJump([startCoord, endCoord], board)
 
   if (piece.pieceType === PieceType.Checker && !moveIsJump) {
-    return piece.player === Player.Black
+    return piece.player === Color.Black
       ? startCoord.row < endCoord.row
       : startCoord.row > endCoord.row
   } else {
@@ -360,7 +360,7 @@ function hasValidJump(startCoord: Coord, board: Board) {
     : hasValidKingJump(startCoord, board)
 }
 
-function jumpAvailable(player: Player, board: Board) {
+function jumpAvailable(player: Color, board: Board) {
   function pieceHasJump(row: number, column: number): boolean {
     let piece = board[row][column]
     return (
@@ -381,7 +381,7 @@ function jumpAvailable(player: Player, board: Board) {
   return loop({ row: 0, column: 0 })
 }
 
-function moveAvailable(board: Board, player: Player) {
+function moveAvailable(board: Board, player: Color) {
   function pieceHasMove(row: number, column: number): boolean {
     let piece = board[row][column]
     return (
@@ -403,16 +403,16 @@ function moveAvailable(board: Board, player: Player) {
   return loop({ row: 0, column: 0 })
 }
 
-export function winningPlayer(board: Board, currentPlayer: Player | undefined) {
-  const blackHasMove = moveAvailable(board, Player.Black)
-  const whiteHasMove = moveAvailable(board, Player.White)
+export function winningPlayer(board: Board, currentPlayer: Color | undefined) {
+  const blackHasMove = moveAvailable(board, Color.Black)
+  const whiteHasMove = moveAvailable(board, Color.White)
 
   if (!blackHasMove && !whiteHasMove) {
     return currentPlayer
   } else if (!whiteHasMove) {
-    return Player.Black
+    return Color.Black
   } else if (!blackHasMove) {
-    return Player.White
+    return Color.White
   } else {
     return undefined
   }
