@@ -235,13 +235,12 @@ export function getOnSquareClicked(
       column: column,
     }
 
-    console.log(controller)
     if (
       (controller.currentPlayer === Color.White &&
         controller.whiteInfo.player === PlayerType.Computer) ||
       (controller.currentPlayer === Color.Black &&
         controller.blackInfo.player === PlayerType.Computer)
-    ){
+    ) {
       setState(undefined)
       return
     }
@@ -305,6 +304,7 @@ export function GameBoard() {
     ) {
       let dto = cloneDeep(value) as any
       dto.variant = value.variant.variant
+      console.log(dto)
       delete dto.blackInfo
       delete dto.whiteInfo
 
@@ -313,11 +313,9 @@ export function GameBoard() {
           ? value.whiteInfo.aiLevel!
           : value.blackInfo.aiLevel!
 
+      const endpoint = `https://checkersfunctions.azurewebsites.net/api/CheckersAi_GetMove/${level}?code=HT9j95pjEil4NSTBqSYIeLYgeemuasljnBZ3YaMAzL3BTpgQEP9Etg==`
       axios
-        .post<Move>(
-          `https://checkersfunctions.azurewebsites.net/api/CheckersAi_GetMove/${level}?code=HT9j95pjEil4NSTBqSYIeLYgeemuasljnBZ3YaMAzL3BTpgQEP9Etg==`,
-          dto,
-        )
+        .post<Move>(endpoint, dto)
         .then((move) => {
           console.log(move.data)
           makeMove(move.data, value, setState, onChange)

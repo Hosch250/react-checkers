@@ -1,6 +1,6 @@
 export enum Color {
-  White,
   Black,
+  White,
 }
 
 export enum PieceType {

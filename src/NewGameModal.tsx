@@ -213,14 +213,14 @@ function NewGameModal({
                 form.position === 'default' ? 'd-none' : ''
               }`}
             >
-              <span className="input-group-text" id="basic-addon1">
+              <span className="input-group-text" id="fen-label">
                 FEN
               </span>
               <input
                 type="text"
                 className="form-control"
                 aria-label="FEN"
-                aria-describedby="basic-addon1"
+                aria-describedby="fen-label"
                 onChange={(_) => setForm({ ...form, fen: _.target.value })}
               />
             </div>
