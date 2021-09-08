@@ -40,7 +40,8 @@ function Board({
 }) {
   let jsx = board.map((row, rowIndex) => {
     return (
-      <div className="board-row" key={`row_${rowIndex}`}>
+      // <div className="board-row" key={`row_${rowIndex}`}>
+      <>
         {row.map((piece, col) => {
           return getSquare(
             rowIndex,
@@ -50,7 +51,8 @@ function Board({
             onclick,
           )
         })}
-      </div>
+        </>
+      // </div>
     )
   })
 

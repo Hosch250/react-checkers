@@ -20,7 +20,7 @@ function Square({
   return (
     <div
       style={{ backgroundColor }}
-      className={`Square ${isSelected ? 'selected' : ''}`}
+      className={`Square row${coord.row} col${coord.column} ${isSelected ? 'selected' : ''}`}
       role="button"
       onClick={() => onclick(coord.row, coord.column)}
     >

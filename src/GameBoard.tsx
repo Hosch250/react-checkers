@@ -317,7 +317,6 @@ export function GameBoard() {
       axios
         .post<Move>(endpoint, dto)
         .then((move) => {
-          console.log(move.data)
           makeMove(move.data, value, setState, onChange)
         })
         .catch((err) => {
