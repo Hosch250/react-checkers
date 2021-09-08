@@ -1,11 +1,13 @@
 import { last } from 'lodash'
 import React from 'react'
+import Button from 'react-bootstrap/esm/Button'
 import { useGameController } from './GameControllerContext'
 import { GameController } from './models/game-controller'
 import { controllerFromFen } from './models/pdn'
 import { PdnTurn } from './models/types'
 import { MoveContextMenu } from './MoveContextMenu'
 import './MoveHistory.css'
+import MoveHistoryModal from './MoveHistoryModal'
 
 function getLastFen(turn: PdnTurn) {
   if (!!turn.whiteMove) {
@@ -184,3 +186,29 @@ function MoveHistory() {
 }
 
 export default MoveHistory
+
+export function MoveHistoryCollapsed() {
+  const { value } = useGameController()
+  let lastMove = last(value.moveHistory)
+  const showState = React.useState(false)
+
+  return (
+    <div className="MoveHistory">
+      {!!lastMove ? (
+        <>
+          <Button
+            variant="secondary"
+            className="w-100 text-start"
+            onClick={(_) => showState[1](true)}
+          >
+            <i className="bi-list" />
+            &nbsp;
+            {lastMove.moveNumber}:&nbsp;{lastMove.blackMove?.displayString}{' '}
+            &nbsp;{lastMove.whiteMove?.displayString}
+          </Button>
+          <MoveHistoryModal showState={showState} />
+        </>
+      ) : null}
+    </div>
+  )
+}
