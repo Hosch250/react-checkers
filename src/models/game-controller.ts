@@ -58,7 +58,7 @@ export const newPoolCheckersGame: GameController = {
 export const newTurkishDraughtsGame: GameController = {
   variant: GameVariantTurkishDraughts,
   board: GameVariantTurkishDraughts.apiMembers.defaultBoard,
-  currentPlayer: Color.Black,
+  currentPlayer: Color.White,
   initialPosition: GameVariantTurkishDraughts.apiMembers.defaultFen,
   moveHistory: [],
   currentCoord: undefined,

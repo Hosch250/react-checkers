@@ -16,6 +16,10 @@ const PdnMembersPoolCheckers: PdnMembers = {
   pdnBoard: PoolCheckersVariant.pdnBoard,
   pdnBoardCoords: PoolCheckersVariant.pdnBoardCoords,
 }
+const PdnMembersTurkishDraughts: PdnMembers = {
+  pdnBoard: TurkishDraughtsVariant.pdnBoard,
+  pdnBoardCoords: TurkishDraughtsVariant.pdnBoardCoords,
+}
 
 export type ApiMembers = {
   defaultBoard: (Piece | undefined)[][]
@@ -79,19 +83,18 @@ const ApiMembersPoolCheckers: ApiMembers = {
 const ApiMembersTurkishDraughts: ApiMembers = {
   defaultBoard: TurkishDraughtsVariant.defaultBoard,
   defaultFen: TurkishDraughtsVariant.defaultFen,
-  isValidMove: PoolCheckersVariant.isValidMove,
-  movePiece: PoolCheckersVariant.movePiece,
-  moveSequence: PoolCheckersVariant.moveSequence,
+  isValidMove: TurkishDraughtsVariant.isValidMove,
+  movePiece: TurkishDraughtsVariant.movePiece,
+  moveSequence: TurkishDraughtsVariant.moveSequence,
   isJump: TurkishDraughtsVariant.isJump,
   startingPlayer: TurkishDraughtsVariant.StartingPlayer,
-  winningPlayer: PoolCheckersVariant.winningPlayer,
-  isDrawn: PoolCheckersVariant.isDrawn,
-  playerTurnEnds: PoolCheckersVariant.playerTurnEnds,
+  winningPlayer: TurkishDraughtsVariant.winningPlayer,
+  isDrawn: TurkishDraughtsVariant.isDrawn,
+  playerTurnEnds: TurkishDraughtsVariant.playerTurnEnds,
 }
 
 export type GameVariant = {
   variant: Variant
-  //aiMembers: AiMembers
   pdnMembers: PdnMembers
   apiMembers: ApiMembers
 }
@@ -112,6 +115,6 @@ export const GameVariantPoolCheckers: GameVariant = {
 }
 export const GameVariantTurkishDraughts: GameVariant = {
   variant: Variant.TurkishDraughts,
-  pdnMembers: undefined!, //PdnMembersTurkishDraughts,
+  pdnMembers: PdnMembersTurkishDraughts,
   apiMembers: ApiMembersTurkishDraughts
 }

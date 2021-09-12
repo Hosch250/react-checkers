@@ -12,7 +12,7 @@ export enum Variant {
   AmericanCheckers,
   PoolCheckers,
   AmericanCheckersOptionalJump,
-  TurkishDraughts
+  TurkishDraughts,
 }
 
 export enum PlayerType {
@@ -28,7 +28,7 @@ export type Board = (Piece | undefined)[][]
 
 export type Piece = { player: Color; pieceType: PieceType }
 
-export type Player = { color: Color, player: PlayerType, aiLevel?: number }
+export type Player = { color: Color; player: PlayerType; aiLevel?: number }
 
 export type PdnMove = {
   move: number[]
@@ -162,6 +162,16 @@ export function moveIsDiagonal(startCoord: Coord, endCoord: Coord) {
     startCoord !== endCoord &&
     Math.abs(startCoord.row - endCoord.row) ===
       Math.abs(startCoord.column - endCoord.column)
+  )
+}
+
+export function moveIsOrthogonal(startCoord: Coord, endCoord: Coord) {
+  return (
+    startCoord !== endCoord &&
+    ((Math.abs(startCoord.row - endCoord.row) === 0 &&
+      Math.abs(startCoord.column - endCoord.column) === 1) ||
+      (Math.abs(startCoord.row - endCoord.row) === 1 &&
+        Math.abs(startCoord.column - endCoord.column) === 0))
   )
 }
 
