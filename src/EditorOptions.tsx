@@ -5,6 +5,7 @@ import {
   GameController,
   newAmericanCheckersGame,
   newPoolCheckersGame,
+  newTurkishDraughtsGame,
 } from './models/game-controller'
 import { emptyBoardList, Color, Variant } from './models/types'
 
@@ -20,6 +21,9 @@ function EditorOptions() {
           break
         case Variant.PoolCheckers:
           newGame = cloneDeep(newPoolCheckersGame)
+          break
+        case Variant.TurkishDraughts:
+          newGame = cloneDeep(newTurkishDraughtsGame)
           break
       }
 
@@ -46,6 +50,7 @@ function EditorOptions() {
         >
           <option value={Variant.AmericanCheckers}>American Checkers</option>
           <option value={Variant.PoolCheckers}>Pool Checkers</option>
+          <option value={Variant.TurkishDraughts}>Turkish Draughts</option>
         </select>
         <label htmlFor="variant">Variant</label>
       </div>

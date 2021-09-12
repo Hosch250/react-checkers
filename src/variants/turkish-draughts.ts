@@ -1,4 +1,4 @@
-import { cloneDeep, isEqual, last, tail } from 'lodash'
+import { cloneDeep, isEqual, last, some, tail } from 'lodash'
 import { blackChecker, Board, Color, Coord, Move, moveIsOrthogonal, nextPoint, offset, PdnTurn, Piece, PieceType, promote, square, whiteChecker } from '../models/types'
 
 const Rows = 7
@@ -201,7 +201,7 @@ function coordExists(coord: Coord) {
   )
 }
 
-export function getJumpTarget(
+export function getJumpTargets(
   currentPlayer: Color,
   currentCoord: Coord,
   rowSign: number,
@@ -228,8 +228,8 @@ export function getJumpTarget(
   ) {
     let targets = [nextCoord]
     do {
-      let targetN = offset(nextCoord, { row: rowSign, column: colSign })
-      if (!targetN) {
+      let targetN = offset(last(targets)!, { row: rowSign, column: colSign })
+      if (coordExists(targetN) && !square(targetN, board)) {
         targets.push(targetN)
       } else {
         break
@@ -238,7 +238,7 @@ export function getJumpTarget(
 
     return targets
   } else {
-    return getJumpTarget(currentPlayer, nextCoord, rowSign, colSign, board)
+    return getJumpTargets(currentPlayer, nextCoord, rowSign, colSign, board)
   }
 }
 
@@ -359,7 +359,7 @@ function isValidCheckerJump(startCoord: Coord, endCoord: Coord, board: Board) {
   let jumpedPiece = square(jumpedCoord!, board)
 
   return (
-    Math.abs(startCoord.row - endCoord.row) === 2 &&
+    (Math.abs(startCoord.row - endCoord.row) === 2 || Math.abs(startCoord.column - endCoord.column) === 2) &&
     !square(endCoord, board) &&
     !!jumpedPiece &&
     jumpedPiece.player !== piece.player
@@ -376,7 +376,7 @@ function isValidKingJump(startCoord: Coord, endCoord: Coord, board: Board) {
   let colSign = Math.sign(endCoord.column - startCoord.column)
   let nextCoord = offset(startCoord, { row: rowSign, column: colSign })
 
-  let jumpTarget = getJumpTarget(
+  let jumpTarget = getJumpTargets(
     piece.player,
     nextCoord,
     rowSign,
@@ -386,7 +386,7 @@ function isValidKingJump(startCoord: Coord, endCoord: Coord, board: Board) {
 
   return (
     !!jumpTarget &&
-    isEqual(jumpTarget, endCoord) &&
+    some(jumpTarget, endCoord) &&
     !square(endCoord, board) &&
     !!jumpedPiece &&
     jumpedPiece.player !== piece.player
@@ -452,10 +452,10 @@ function hasValidCheckerJump(startCoord: Coord, board: Board) {
 }
 function hasValidKingJump(startCoord: Coord, board: Board) {
   let jumpCoordOffsets = [
-    { row: 0, column: 1 },
-    { row: 0, column: -1 },
-    { row: 1, column: 0 },
-    { row: -1, column: 0 },
+    { row: 0, column: 2 },
+    { row: 0, column: -2 },
+    { row: 2, column: 0 },
+    { row: -2, column: 0 },
   ]
 
   let currentPlayer = square(startCoord, board)!.player
@@ -463,14 +463,14 @@ function hasValidKingJump(startCoord: Coord, board: Board) {
   function getJumps(acc: Coord[], jumpOffsets: Coord[]): Coord[] {
     let head = jumpOffsets[0]
     let jumpOffsetsTail = tail(jumpOffsets)
-    let jumpCoord = getJumpTarget(
+    let jumpCoords = getJumpTargets(
       currentPlayer,
       offset(startCoord, { row: head.row, column: head.column }),
       head.row,
       head.column,
       board,
     )
-    let currentJumps = !jumpCoord ? acc : [...acc, ...jumpCoord]
+    let currentJumps = !jumpCoords ? acc : [...acc, ...jumpCoords]
 
     return jumpOffsetsTail.length === 0
       ? currentJumps
@@ -531,18 +531,19 @@ function moveAvailable(board: Board, player: Color) {
 }
 
 export function winningPlayer(board: Board, currentPlayer: Color | undefined) {
-  const blackHasMove = moveAvailable(board, Color.Black)
-  const whiteHasMove = moveAvailable(board, Color.White)
+  return undefined
+  // const blackHasMove = moveAvailable(board, Color.Black)
+  // const whiteHasMove = moveAvailable(board, Color.White)
 
-  if (!blackHasMove && !whiteHasMove) {
-    return currentPlayer
-  } else if (!whiteHasMove) {
-    return Color.Black
-  } else if (!blackHasMove) {
-    return Color.White
-  } else {
-    return undefined
-  }
+  // if (!blackHasMove && !whiteHasMove) {
+  //   return currentPlayer
+  // } else if (!whiteHasMove) {
+  //   return Color.Black
+  // } else if (!blackHasMove) {
+  //   return Color.White
+  // } else {
+  //   return undefined
+  // }
 }
 
 export function isDrawn(initialFen: string, moveHistory: PdnTurn[]) {

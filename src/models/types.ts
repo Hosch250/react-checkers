@@ -168,10 +168,8 @@ export function moveIsDiagonal(startCoord: Coord, endCoord: Coord) {
 export function moveIsOrthogonal(startCoord: Coord, endCoord: Coord) {
   return (
     startCoord !== endCoord &&
-    ((Math.abs(startCoord.row - endCoord.row) === 0 &&
-      Math.abs(startCoord.column - endCoord.column) === 1) ||
-      (Math.abs(startCoord.row - endCoord.row) === 1 &&
-        Math.abs(startCoord.column - endCoord.column) === 0))
+    (Math.abs(startCoord.row - endCoord.row) === 0 ||
+      Math.abs(startCoord.column - endCoord.column) === 0)
   )
 }
 
