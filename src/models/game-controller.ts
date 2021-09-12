@@ -3,12 +3,11 @@ import {
   GameVariantAmericanCheckers,
   GameVariantAmericanCheckersOptionalJump,
   GameVariantPoolCheckers,
+  GameVariantTurkishDraughts,
 } from './game-variant'
 import {
   Board,
   Coord,
-  defaultBoard,
-  defaultFen,
   PdnTurn,
   Color,
   Player,
@@ -28,9 +27,9 @@ export type GameController = {
 
 export const newAmericanCheckersGame: GameController = {
   variant: GameVariantAmericanCheckers,
-  board: defaultBoard,
+  board: GameVariantAmericanCheckers.apiMembers.defaultBoard,
   currentPlayer: Color.Black,
-  initialPosition: defaultFen,
+  initialPosition: GameVariantAmericanCheckers.apiMembers.defaultFen,
   moveHistory: [],
   currentCoord: undefined,
   blackInfo: {color: Color.Black, player: PlayerType.Human},
@@ -38,9 +37,9 @@ export const newAmericanCheckersGame: GameController = {
 }
 export const newAmericanCheckersOptionalJumpGame: GameController = {
   variant: GameVariantAmericanCheckersOptionalJump,
-  board: defaultBoard,
+  board: GameVariantAmericanCheckersOptionalJump.apiMembers.defaultBoard,
   currentPlayer: Color.Black,
-  initialPosition: defaultFen,
+  initialPosition: GameVariantAmericanCheckersOptionalJump.apiMembers.defaultFen,
   moveHistory: [],
   currentCoord: undefined,
   blackInfo: {color: Color.Black, player: PlayerType.Human},
@@ -48,9 +47,19 @@ export const newAmericanCheckersOptionalJumpGame: GameController = {
 }
 export const newPoolCheckersGame: GameController = {
   variant: GameVariantPoolCheckers,
-  board: defaultBoard,
+  board: GameVariantPoolCheckers.apiMembers.defaultBoard,
   currentPlayer: Color.Black,
-  initialPosition: defaultFen,
+  initialPosition: GameVariantPoolCheckers.apiMembers.defaultFen,
+  moveHistory: [],
+  currentCoord: undefined,
+  blackInfo: {color: Color.Black, player: PlayerType.Human},
+  whiteInfo: {color: Color.White, player: PlayerType.Human}
+}
+export const newTurkishDraughtsGame: GameController = {
+  variant: GameVariantTurkishDraughts,
+  board: GameVariantTurkishDraughts.apiMembers.defaultBoard,
+  currentPlayer: Color.Black,
+  initialPosition: GameVariantTurkishDraughts.apiMembers.defaultFen,
   moveHistory: [],
   currentCoord: undefined,
   blackInfo: {color: Color.Black, player: PlayerType.Human},

@@ -14,13 +14,15 @@ export function getSquare(
   row: number,
   col: number,
   isSelected: boolean,
+  isMonoColor: boolean,
   piece: Piece | undefined,
   onclick: (row: number, col: number) => void,
 ) {
   return (
     <Square
       key={`col_${row}${col}`}
-      color={getSquareColor(row, col)}
+      color={isMonoColor ? Color.White : getSquareColor(row, col)}
+      hasBorder={isMonoColor}
       piece={piece}
       coord={{ row: row, column: col }}
       isSelected={isSelected}
@@ -32,27 +34,28 @@ export function getSquare(
 function Board({
   board,
   selectedCoord,
+  isMonoColor,
   onclick,
 }: {
   board: BoardType
-  selectedCoord: Coord | undefined
+  selectedCoord: Coord | undefined,
+  isMonoColor: boolean,
   onclick: (row: number, col: number) => void
 }) {
   let jsx = board.map((row, rowIndex) => {
     return (
-      // <div className="board-row" key={`row_${rowIndex}`}>
       <>
         {row.map((piece, col) => {
           return getSquare(
             rowIndex,
             col,
             selectedCoord?.row === rowIndex && selectedCoord.column === col,
+            isMonoColor,
             piece,
             onclick,
           )
         })}
         </>
-      // </div>
     )
   })
 

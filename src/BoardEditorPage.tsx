@@ -10,6 +10,7 @@ import {
   blackKing,
   whiteChecker,
   whiteKing,
+  Variant,
 } from './models/types'
 import Board from './Board'
 import { isEqual } from 'lodash'
@@ -50,6 +51,8 @@ function BoardEditorPage() {
     value, selectedPiece,
   ])
 
+  let isBoardMonoColor = value.variant === Variant.TurkishDraughts
+
   return (
     <div className="BoardEditorPage">
       <Row>
@@ -77,7 +80,7 @@ function BoardEditorPage() {
           <Button className="w-100 mt-3" variant="secondary" onClick={() => setSelectedPiece(undefined)}>Clear</Button>
         </Col>
         <Col md="auto" sm={12}>
-          <Board board={value.board} selectedCoord={undefined} onclick={memo} />
+          <Board board={value.board} selectedCoord={undefined} onclick={memo} isMonoColor={isBoardMonoColor} />
           <FenViewer />
         </Col>
         <Col md="auto" sm={12}>

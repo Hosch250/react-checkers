@@ -11,6 +11,7 @@ import {
   Board as BoardType,
   PdnTurn,
   PlayerType,
+  Variant,
 } from './models/types'
 import { useGameController } from './GameControllerContext'
 import Board from './Board'
@@ -304,7 +305,6 @@ export function GameBoard() {
     ) {
       let dto = cloneDeep(value) as any
       dto.variant = value.variant.variant
-      console.log(dto)
       delete dto.blackInfo
       delete dto.whiteInfo
 
@@ -325,7 +325,8 @@ export function GameBoard() {
     }
   }, [value])
 
-  return <Board board={value.board} selectedCoord={state} onclick={memo} />
+  let isMonoColor = value.variant.variant === Variant.TurkishDraughts
+  return <Board board={value.board} selectedCoord={state} onclick={memo} isMonoColor={isMonoColor} />
 }
 
 export default GameBoard

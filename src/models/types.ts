@@ -12,6 +12,7 @@ export enum Variant {
   AmericanCheckers,
   PoolCheckers,
   AmericanCheckersOptionalJump,
+  TurkishDraughts
 }
 
 export enum PlayerType {
@@ -60,89 +61,6 @@ export const blackKing: Piece = {
   player: Color.Black,
   pieceType: PieceType.King,
 }
-
-export const defaultBoard: (Piece | undefined)[][] = [
-  [
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-  ],
-  [
-    blackChecker,
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-    undefined,
-  ],
-  [
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-    undefined,
-    blackChecker,
-  ],
-  [
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ],
-  [
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ],
-  [
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-  ],
-  [
-    undefined,
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-    whiteChecker,
-  ],
-  [
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-    whiteChecker,
-    undefined,
-  ],
-]
 
 export const emptyBoardList = () => [
   [
@@ -226,9 +144,6 @@ export const emptyBoardList = () => [
     undefined,
   ],
 ]
-
-export const defaultFen =
-  '[FEN "B:W21,22,23,24,25,26,27,28,29,30,31,32:B1,2,3,4,5,6,7,8,9,10,11,12"]'
 
 export function offset(c1: Coord, c2: Coord) {
   return { row: c1.row + c2.row, column: c1.column + c2.column }

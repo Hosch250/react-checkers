@@ -36,6 +36,9 @@ function GameInfo() {
     case Variant.AmericanCheckersOptionalJump:
       variantName = 'American Checkers Optional Jump'
       break
+      case Variant.TurkishDraughts:
+        variantName = 'Turkish Draughts'
+        break
   }
 
   let blackPlayerLabel = value.blackInfo.player === PlayerType.Human ? 'Human' : `Computer Level ${value.blackInfo.aiLevel}`

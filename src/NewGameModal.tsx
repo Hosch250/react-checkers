@@ -9,6 +9,7 @@ import {
   newAmericanCheckersGame,
   newAmericanCheckersOptionalJumpGame,
   newPoolCheckersGame,
+  newTurkishDraughtsGame,
 } from './models/game-controller'
 import { controllerFromFen } from './models/pdn'
 import { Variant, Color, PlayerType, Player } from './models/types'
@@ -44,6 +45,9 @@ function NewGameModal({
       case Variant.PoolCheckers:
         controller = cloneDeep(newPoolCheckersGame)
         break
+        case Variant.TurkishDraughts:
+          controller = cloneDeep(newTurkishDraughtsGame)
+          break
     }
 
     if (form.position === 'fen') {
@@ -90,6 +94,7 @@ function NewGameModal({
                 American Checkers w/ Optional Jump
               </option>
               <option value={Variant.PoolCheckers}>Pool Checkers</option>
+              <option value={Variant.TurkishDraughts}>Turkish Draughts</option>
             </select>
             <label htmlFor="variant">Variant</label>
           </div>
