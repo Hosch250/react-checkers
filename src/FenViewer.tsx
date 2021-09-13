@@ -1,5 +1,5 @@
 import { useBoardEditor } from "./BoardEditorContext"
-import { newAmericanCheckersGame, newPoolCheckersGame } from "./models/game-controller"
+import { newAmericanCheckersGame, newPoolCheckersGame, newTurkishDraughtsGame } from "./models/game-controller"
 import { PdnMembers } from "./models/game-variant"
 import { createFen } from "./models/pdn"
 import { Variant } from "./models/types"
@@ -14,6 +14,9 @@ function FenViewer() {
       break
     case Variant.PoolCheckers:
       pdnMembers = newPoolCheckersGame.variant.pdnMembers
+      break
+    case Variant.TurkishDraughts:
+      pdnMembers = newTurkishDraughtsGame.variant.pdnMembers
       break
   }
   const fen = createFen(pdnMembers!, value.player, value.board)
