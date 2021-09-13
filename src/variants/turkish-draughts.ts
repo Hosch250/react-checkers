@@ -257,7 +257,7 @@ export function isJump(move: Move, originalBoard: Board) {
         column: targetCoord.column + colSign,
       }
 
-      if (!!square(targetCoord, originalBoard)) {
+      if (coordExists(targetCoord) && !!square(targetCoord, originalBoard) && !isEqual(targetCoord, move[0])) {
         pieceJumpedCount += 1
       }
     } while (coordExists(targetCoord) && !isEqual(targetCoord, move[0]))
@@ -433,6 +433,7 @@ function hasValidCheckerJump(startCoord: Coord, board: Board) {
     offset(startCoord, { row: 0, column: 2 }),
     offset(startCoord, { row: 0, column: -2 }),
     offset(startCoord, { row: 2, column: 0 }),
+    offset(startCoord, { row: -2, column: 0 }),
   ]
 
   function anyJumpIsValid(jumps: Coord[]): boolean {
