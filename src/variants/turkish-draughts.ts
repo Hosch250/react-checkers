@@ -88,7 +88,7 @@ export const defaultBoard: (Piece | undefined)[][] = [
   ],
 ]
 
-export const defaultFen = '[FEN "B:W:B"]' // todo
+export const defaultFen = '[FEN "B:W41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56:B9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24"]'
 
 export const pdnBoard = [
   [1, 2, 3, 4, 5, 6, 7, 8],
@@ -273,17 +273,18 @@ export function isJump(move: Move, originalBoard: Board) {
 function checkMoveDirection(
   piece: Piece,
   startCoord: Coord,
-  endCoord: Coord,
-  board: Board,
+  endCoord: Coord
 ) {
-  let moveIsJump = isJump([startCoord, endCoord], board)
-
-  if (piece.pieceType === PieceType.Checker && !moveIsJump) {
-    return piece.player === Color.Black
-      ? startCoord.row <= endCoord.row
-      : startCoord.row >= endCoord.row
-  } else {
-    return true
+  switch (piece?.pieceType) {
+    case PieceType.Checker:
+      return (
+        (piece.player === Color.Black && startCoord.row <= endCoord.row) ||
+        (piece.player === Color.White && startCoord.row >= endCoord.row)
+      )
+    case PieceType.King:
+      return true
+    default:
+      return false
   }
 }
 
@@ -330,7 +331,7 @@ function isValidCheckerHop(startCoord: Coord, endCoord: Coord, board: Board) {
       )
   
   return (isOrthogonalMove &&
-    checkMoveDirection(piece, startCoord, endCoord, board) &&
+    checkMoveDirection(piece, startCoord, endCoord) &&
     !square(endCoord, board)
   )
 }
@@ -359,6 +360,7 @@ function isValidCheckerJump(startCoord: Coord, endCoord: Coord, board: Board) {
   let jumpedPiece = square(jumpedCoord!, board)
 
   return (
+    checkMoveDirection(piece, startCoord, endCoord) &&
     (Math.abs(startCoord.row - endCoord.row) === 2 || Math.abs(startCoord.column - endCoord.column) === 2) &&
     !square(endCoord, board) &&
     !!jumpedPiece &&
@@ -451,6 +453,7 @@ function hasValidCheckerJump(startCoord: Coord, board: Board) {
 
   return anyJumpIsValid(jumpCoords)
 }
+
 function hasValidKingJump(startCoord: Coord, board: Board) {
   let jumpCoordOffsets = [
     { row: 0, column: 2 },

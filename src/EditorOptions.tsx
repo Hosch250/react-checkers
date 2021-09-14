@@ -12,10 +12,10 @@ import { emptyBoardList, Color, Variant } from './models/types'
 function EditorOptions() {
   const { value, onChange } = useBoardEditor()
 
-  function setBoard(state: string) {
+  function setBoard(state: string, variant: Variant) {
     if (state === 'initial') {
       let newGame: GameController
-      switch (value.variant) {
+      switch (variant) {
         case Variant.AmericanCheckers:
           newGame = cloneDeep(newAmericanCheckersGame)
           break
@@ -27,7 +27,7 @@ function EditorOptions() {
           break
       }
 
-      onChange({ ...value, board: newGame!.board })
+      onChange({ board: newGame!.board, variant: variant, player: newGame!.currentPlayer, pdnMembers: newGame!.variant.pdnMembers })
     }
 
     if (state === 'empty') {
@@ -35,7 +35,7 @@ function EditorOptions() {
     }
   }
 
-  let [position, setPosition] = React.useState('intial')
+  let [position, setPosition] = React.useState('initial')
 
   return (
     <>
@@ -45,7 +45,7 @@ function EditorOptions() {
           id="variant"
           onChange={(_) => {
             onChange({ ...value, variant: parseInt(_.target.value) })
-            setBoard(position)
+            setBoard(position, parseInt(_.target.value))
           }}
         >
           <option value={Variant.AmericanCheckers}>American Checkers</option>
@@ -61,6 +61,7 @@ function EditorOptions() {
           onChange={(_) =>
             onChange({ ...value, player: parseInt(_.target.value) as Color })
           }
+          value={value.player}
         >
           <option value={Color.Black}>Black</option>
           <option value={Color.White}>White</option>
@@ -74,7 +75,7 @@ function EditorOptions() {
           value={position}
           onChange={(_) => {
             setPosition(_.target.value)
-            setBoard(_.target.value)
+            setBoard(_.target.value, value.variant)
           }}
         >
           <option value="initial">Initial</option>

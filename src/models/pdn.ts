@@ -104,7 +104,7 @@ export function createFen(variant: PdnMembers, player: Color, board: Board) {
 
   let loop = (fenNumbers: string[], player: Color, coord: Coord): string[] => {
     let next = nextPoint(coord, 7, 7)
-    if (next) {
+    if (!!next) {
       let piece = square(coord, board)
       if (!!piece && isPlayerPiece(player, coord, board)) {
         let isKing = piece.pieceType === PieceType.King
@@ -112,6 +112,9 @@ export function createFen(variant: PdnMembers, player: Color, board: Board) {
         let pdnBoard = variant.pdnBoard
 
         let fenNumber = square(coord, pdnBoard)!
+        console.log(coord)
+        console.log(pdnBoard)
+        console.log('fen number', fenNumber)
         return loop(
           [...fenNumbers, (isKing ? 'K' : '') + fenNumber.toString()],
           player,

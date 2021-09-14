@@ -2,24 +2,10 @@ import { useBoardEditor } from "./BoardEditorContext"
 import { newAmericanCheckersGame, newPoolCheckersGame, newTurkishDraughtsGame } from "./models/game-controller"
 import { PdnMembers } from "./models/game-variant"
 import { createFen } from "./models/pdn"
-import { Variant } from "./models/types"
 
 function FenViewer() {
   const { value } = useBoardEditor()
-
-  let pdnMembers: PdnMembers
-  switch (value.variant) {
-    case Variant.AmericanCheckers:
-      pdnMembers = newAmericanCheckersGame.variant.pdnMembers
-      break
-    case Variant.PoolCheckers:
-      pdnMembers = newPoolCheckersGame.variant.pdnMembers
-      break
-    case Variant.TurkishDraughts:
-      pdnMembers = newTurkishDraughtsGame.variant.pdnMembers
-      break
-  }
-  const fen = createFen(pdnMembers!, value.player, value.board)
+  const fen = createFen(value.pdnMembers, value.player, value.board)
 
   function copyFen() {
     navigator.clipboard.writeText(fen);

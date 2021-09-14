@@ -20,7 +20,7 @@ export function getSquare(
 ) {
   return (
     <Square
-      key={`col_${row}${col}`}
+      key={`${row}_${col}`}
       color={isMonoColor ? Color.White : getSquareColor(row, col)}
       hasBorder={isMonoColor}
       piece={piece}
@@ -55,7 +55,7 @@ function Board({
             onclick,
           )
         })}
-        </>
+      </>
     )
   })
 

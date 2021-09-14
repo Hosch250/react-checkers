@@ -1,3 +1,5 @@
+import { isEqual } from "lodash"
+
 export enum Color {
   Black,
   White,
@@ -159,7 +161,7 @@ export function promote(piece: Piece) {
 
 export function moveIsDiagonal(startCoord: Coord, endCoord: Coord) {
   return (
-    startCoord !== endCoord &&
+    !isEqual(startCoord, endCoord) &&
     Math.abs(startCoord.row - endCoord.row) ===
       Math.abs(startCoord.column - endCoord.column)
   )
@@ -167,7 +169,7 @@ export function moveIsDiagonal(startCoord: Coord, endCoord: Coord) {
 
 export function moveIsOrthogonal(startCoord: Coord, endCoord: Coord) {
   return (
-    startCoord !== endCoord &&
+    !isEqual(startCoord, endCoord) &&
     (Math.abs(startCoord.row - endCoord.row) === 0 ||
       Math.abs(startCoord.column - endCoord.column) === 0)
   )
