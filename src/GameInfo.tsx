@@ -15,9 +15,9 @@ function GameInfo() {
   )
 
   let winStatus = '*'
-  if (winningPlayer === Color.Black) {
+  if (winningPlayer === Color.Black && value.currentPlayer === Color.White) {
     winStatus = '0-1'
-  } else if (winningPlayer === Color.White) {
+  } else if (winningPlayer === Color.White && value.currentPlayer === Color.Black) {
     winStatus = '1-0'
   } else if (
     value.variant.apiMembers.isDrawn(value.initialPosition, value.moveHistory)
