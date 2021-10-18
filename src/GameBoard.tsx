@@ -304,7 +304,6 @@ export function GameBoard() {
     ) {
       let dto = cloneDeep(value) as any
       dto.variant = value.variant.variant
-      console.log(dto)
       delete dto.blackInfo
       delete dto.whiteInfo
 
@@ -313,7 +312,7 @@ export function GameBoard() {
           ? value.whiteInfo.aiLevel!
           : value.blackInfo.aiLevel!
 
-      const endpoint = `https://checkersfunctions.azurewebsites.net/api/CheckersAi_GetMove/${level}?code=HT9j95pjEil4NSTBqSYIeLYgeemuasljnBZ3YaMAzL3BTpgQEP9Etg==`
+      const endpoint = `${process.env.REACT_APP_URL}/CheckersAi_GetMove/${level}?code=HT9j95pjEil4NSTBqSYIeLYgeemuasljnBZ3YaMAzL3BTpgQEP9Etg==`
       axios
         .post<Move>(endpoint, dto)
         .then((move) => {
